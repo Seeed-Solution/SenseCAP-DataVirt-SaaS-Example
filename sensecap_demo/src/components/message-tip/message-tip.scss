@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/*
+*  description: message-tip
+*  author: duanliang
+*  update-time: 2017-5-8
+*/
+.message-tip-box {
+  box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, .12), 0 0 0.06rem 0 rgba(0, 0, 0, .04);
+  -webkit-box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, .12), 0 0 0.06rem 0 rgba(0, 0, 0, .04);
+  min-width: 3rem;
+  padding: 0.1rem 0.12rem;
+  box-sizing: border-box;
+  border-radius: 0.02rem;
+  position: fixed;
+  left: 50%;
+  top: 10%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  background-color: #fff;
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.4s;
+  transition: opacity 0.3s, -webkit-transform 0.4s;
+  transition: opacity 0.3s, transform 0.4s;
+  transition: opacity 0.3s, transform 0.4s, -webkit-transform 0.4s;
+  overflow: hidden;
+  z-index: 1000200;
+  font-weight: 600;
+
+  .icon-circle-check {
+    color: #13ce66;
+  }
+
+  .icon-circle-cross {
+    color: #ff4949;
+  }
+
+  .icon-information {
+    color: #50bfff;
+  }
+
+  .icon-warning {
+    color: #f7ba2a;
+  }
+
+  .message-icon {
+    width: 0.4rem;
+    height: 0.4rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .message-group {
+    margin-left: 0.38rem;
+    position: relative;
+
+    p {
+      font-size: 0.14rem;
+      line-height: 0.2rem;
+      margin: 0 0.34rem 0 0;
+      white-space: nowrap;
+      color: #8492a6;
+      text-align: justify;
+    }
+
+    .message-closeBtn {
+      top: 0.03rem;
+      right: 0;
+      position: absolute;
+      cursor: pointer;
+      color: #C0CCDA;
+      font-size: 0.14rem;
+
+      &:hover {
+        color: #99A9BF;
+      }
+    }
+  }
+}
+
+.message-fade-enter,
+.message-fade-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(-50%, -100%);
+  transform: translate(-50%, -100%);
+}

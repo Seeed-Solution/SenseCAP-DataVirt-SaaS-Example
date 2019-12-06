@@ -1,0 +1,17 @@
+{
+    "presets": ["es2015", "stage-2"],
+    "plugins": [
+        "transform-vue-jsx",
+        ["transform-runtime", {
+            "polyfill": true,
+            "regenerator": true
+        }],
+        ["component", [
+            {
+                "libraryName": "element-ui",
+                "styleLibraryName": "theme-chalk"
+            }
+        ]]
+    ],
+    "comments": false
+}

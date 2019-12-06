@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'pingFang-Bold';
+  src: url("./PingFangBold.ttf");
+}
+
+@font-face {
+  font-family: 'pingFang-Medium';
+  src: url("./PingFangMedium.ttf");
+}
