@@ -86,35 +86,14 @@ export default {
       return (parseInt(a[key]) - parseInt(b[key]))
     })
   },
-  // 去重（例去掉相同时间相同测量值相同测量类型的数据）
-  deduplication (arr, key, key1, key2) {
+  // 去重
+  deduplication (arr, key, key1) {
     var result = []
-    var i
-    var j
-    var len = arr.length
-    for (i = 0; i < len; i++) {
-      for (j = i + 1; j < len; j++) {
-        if ((arr[i][key1] === arr[j][key1]) && (arr[i][key] === arr[j][key]) && (arr[i][key2] === arr[j][key2])) {
-          j = ++i
-        }
+    for (var t of arr) {
+      if (result.find(c => c[key] === t[key] && c[key1] === t[key1])) {
+        continue
       }
-      result.push(arr[i])
-    }
-    return result
-  },
-  // 例去掉相同时间相同设备相同测量类型相同值的数据
-  deduplication4 (arr, key, key1, key2, key3) {
-    var result = []
-    var i
-    var j
-    var len = arr.length
-    for (i = 0; i < len; i++) {
-      for (j = i + 1; j < len; j++) {
-        if ((arr[i][key1] === arr[j][key1]) && (arr[i][key] === arr[j][key]) && (arr[i][key2] === arr[j][key2]) && (arr[i][key3] === arr[j][key3])) {
-          j = ++i
-        }
-      }
-      result.push(arr[i])
+      result.push(t)
     }
     return result
   }

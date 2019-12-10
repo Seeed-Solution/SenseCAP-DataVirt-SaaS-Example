@@ -14,7 +14,7 @@ export const routes = [{
   component: index,
   name: 'index',
   meta: {
-    title: 'Seeed智慧农业监控数据平台',
+    title: 'Smart Agriculture Monitoring Data Platform (智慧农业监控数据平台)',
     path: 'index',
     auth: true,
     keepAlive: false

@@ -84,7 +84,9 @@ export default {
           if (this.timer) {
             clearInterval(this.timer)
           };
-          this.timer = setInterval(this.changeData, 3000);
+          if (this.allData.length > 4) {
+            this.timer = setInterval(this.changeData, 10000);
+          }
         } else {
           this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
         }
@@ -163,13 +165,16 @@ export default {
                     width: 26%;
                 }
                 span.value {
-                    width: 30%;
+                    width: 32%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 span.name {
-                  width: 21%;
+                  width: 20%;
                 }
                 span.value.lit {
-                    width: 15%;
+                    width: 14%;
                 }
                 span.red {
                     color: #fe0d0d;

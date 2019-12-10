@@ -87,7 +87,9 @@ export default {
           if (this.timer) {
             clearInterval(this.timer)
           };
-          this.timer = setInterval(this.changeData, 3000);
+          if (this.allData.length > 3) {
+            this.timer = setInterval(this.changeData, 10000);
+          }
         } else {
           this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
         }
@@ -149,6 +151,9 @@ export default {
                     height: 0.2rem;
                     font-size: 0.1rem;
                     border-bottom: 0.01rem solid #606266;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 div.per-bot {
                     height: 0.3rem;

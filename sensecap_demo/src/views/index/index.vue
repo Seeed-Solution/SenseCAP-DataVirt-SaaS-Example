@@ -129,25 +129,27 @@ export default {
         if (res.code == 0) {
           let soilData = [];
           let meteorologyData = [];
+          let oriArr = [];
           if (res.data && res.data.length > 0) {
-            // 去掉重复的测量类型
-            res.data = utils.deduplication4(res.data, 'measure_id', 'measure_Name', 'class_id', 'class_Name');
-            for (var i = 0; i < res.data.length; i++) {
+            // 去掉重复的测量类型 最多展示16个
+            oriArr = utils.deduplication(res.data, 'measure_id', 'class_id');
+            oriArr = oriArr.slice(0, 16);
+            for (var i = 0; i < oriArr.length; i++) {
               // 环境状况的数据
-              if (res.data[i].class_id == 1) {
-                meteorologyData.push(res.data[i])
-              } else if (res.data[i].class_id == 2) {
+              if (oriArr[i].class_id == 1) {
+                meteorologyData.push(oriArr[i])
+              } else if (oriArr[i].class_id == 2) {
                 // 土壤状况的数据
-                soilData.push(res.data[i])
+                soilData.push(oriArr[i])
               }
             }
             // 最多展示8个
-            meteorologyData = meteorologyData.slice(0, 9);
+            meteorologyData = meteorologyData.slice(0, 8);
             // 最多展示8个
-            soilData = soilData.slice(0, 9)
+            soilData = soilData.slice(0, 8)
           }
           this.meaNewData = [];
-          this.meaNewData = res.data && res.data.length > 0 ? res.data : [];
+          this.meaNewData = oriArr && oriArr.length > 0 ? oriArr : [];
           this.soilData = [];
           this.soilData = soilData;
           this.meteorologyData = [];

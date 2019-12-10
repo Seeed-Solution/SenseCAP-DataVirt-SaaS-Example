@@ -3,13 +3,13 @@
   <div class="content">
     <h1 v-if="meteorologyData && meteorologyData.length > 0">{{$t('localization.class' + meteorologyData[0].class_id )}}</h1>
     <div class="tabs">
-      <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="elem.measure_id + inde + 'meteorology' + selIndex" v-if="inde < 4" :class="{'active': selIndex == inde}">
+      <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="'mea' + inde" v-if="inde < 4 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
         <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
       </span>
     </div>
     <div class="tabs" v-if="meteorologyData.length > 4">
-      <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="elem.measure_id + inde + 'meteorology1' + selIndex" v-if="inde > 3" :class="{'active': selIndex == inde}">
+      <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="inde + 'meteorology1'" v-if="inde > 3 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
         <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
       </span>
@@ -63,7 +63,9 @@ export default {
         clearInterval(this.timer);
         this.timer = null;
       }
-      this.getChart(this.selIndex);
+      if (this.meteorologyData && this.meteorologyData.length > 0) {
+        this.getChart(this.selIndex);
+      }
       this.timer = setInterval(() => {
         this.selIndex = this.selIndex + 1;
         if (this.selIndex == this.meteorologyData.length) {
@@ -79,33 +81,40 @@ export default {
     },
     getChart(index) {
       // 最近一周数据
-      let time_end = this.meteorologyData[index].time && this.meteorologyData[index].time.toString().length > 10 ? this.meteorologyData[index].time : (this.meteorologyData[index].time && this.meteorologyData[index].time.toString().length == 10 ?
-        Number(this.meteorologyData[index].time) * 10 :
-        new Date().getTime());
-      let time_start = Number(time_end) - 86400000 * config.detectChartDay;
-      let opinionData = [];
-      ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meteorologyData[index].dev_eui + '&measure_id=' + this.meteorologyData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {
-        if (res.code == 0) {
-          if (res.data && res.data.length > 0) {
-            for (var i = 0; i < res.data.length; i++) {
-              opinionData.push({
-                value: res.data[i] ? [this.timefn(res.data[i].time), res.data[i].value] : []
-              })
+      if (this.meteorologyData[index]) {
+        let time_end = this.meteorologyData[index] && this.meteorologyData[index].time && this.meteorologyData[index].time.toString().length > 10 ? this.meteorologyData[index].time : (this.meteorologyData[index].time && this.meteorologyData[index].time.toString().length == 10 ?
+          Number(this.meteorologyData[index].time) * 10 :
+          new Date().getTime());
+        let time_start = Number(time_end) - 86400000 * config.detectChartDay;
+        let opinionData = [];
+        ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meteorologyData[index].dev_eui + '&measure_id=' + this.meteorologyData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {
+          if (res.code == 0) {
+            if (res.data && res.data.length > 0) {
+              for (var i = 0; i < res.data.length; i++) {
+                opinionData.push({
+                  value: res.data[i] ? [this.timefn(res.data[i].time), res.data[i].value] : []
+                })
+              }
             }
+            this.opinionData = [];
+            this.opinionData.push(opinionData)
+          } else {
+            this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
           }
-          this.opinionData = [];
-          this.opinionData.push(opinionData)
-        } else {
-          this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
-        }
-      }).catch(err => {
-        this.tipsfn('error', this.$t('localization').network_error)
-      })
+        }).catch(err => {
+          this.tipsfn('error', this.$t('localization').network_error)
+        })
+      }
     }
+  },
+  created() {
+    this.timerStart()
   },
   watch: {
     meteorologyData(val) {
-      this.timerStart();
+      if (val.length > 0) {
+        this.getChart(this.selIndex);
+      }
     }
   }
 }

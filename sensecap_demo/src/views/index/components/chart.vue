@@ -2,7 +2,7 @@
 <div class="chart-big">
   <div class="physical-all">
     <div class="physical" :class="{'big': meaNewData.length > 14}">
-      <div class="per" v-for="(item, index) in meaNewData" :key="index + item.measure_id + 'charts' + selIndex">
+      <div class="per" v-for="(item, index) in meaNewData" :key="index + 'charts'" v-if="item">
         <div class="per-icon transition" :class="{'active': selIndex == index}" @click.stop="getIndex(index)">
           <div class="per-content">
             <div class="img"><img :src="require('../../../assets/images/physical/' + item.measure_id + '.png')" /></div>
@@ -66,7 +66,9 @@ export default {
         clearInterval(this.timer);
         this.timer = null;
       }
-      this.getChart(this.selIndex);
+      if (this.meaNewData && this.meaNewData.length > 0) {
+        this.getChart(this.selIndex);
+      }
       this.timer = setInterval(() => {
         this.selIndex = this.selIndex + 1;
         if (this.selIndex == this.meaNewData.length) {
@@ -82,33 +84,40 @@ export default {
     },
     getChart(index) {
       // 最近一周数据
-      let time_end = this.meaNewData[index].time && this.meaNewData[index].time.toString().length > 10 ? this.meaNewData[index].time : (this.meaNewData[index].time && this.meaNewData[index].time.toString().length == 10 ? Number(this.meaNewData[index]
-          .time) * 10 :
-        new Date().getTime());
-      let time_start = Number(time_end) - 86400000 * 7;
-      let opinionData = [];
-      ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meaNewData[index].dev_eui + '&measure_id=' + this.meaNewData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {
-        if (res.code == 0) {
-          if (res.data && res.data.length > 0) {
-            for (var i = 0; i < res.data.length; i++) {
-              opinionData.push({
-                value: res.data[i] ? [this.timefn(res.data[i].time), res.data[i].value] : []
-              })
+      if (this.meaNewData[index]) {
+        let time_end = this.meaNewData[index] && this.meaNewData[index].time && this.meaNewData[index].time.toString().length > 10 ? this.meaNewData[index].time : (this.meaNewData[index].time && this.meaNewData[index].time.toString().length == 10 ? Number(this.meaNewData[index]
+            .time) * 10 :
+          new Date().getTime());
+        let time_start = Number(time_end) - 86400000 * 7;
+        let opinionData = [];
+        ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meaNewData[index].dev_eui + '&measure_id=' + this.meaNewData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {
+          if (res.code == 0) {
+            if (res.data && res.data.length > 0) {
+              for (var i = 0; i < res.data.length; i++) {
+                opinionData.push({
+                  value: res.data[i] ? [this.timefn(res.data[i].time), res.data[i].value] : []
+                })
+              }
             }
+            this.opinionData = [];
+            this.opinionData.push(opinionData)
+          } else {
+            this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
           }
-          this.opinionData = [];
-          this.opinionData.push(opinionData)
-        } else {
-          this.tipsfn('error', res.msg && res.msg.length > 0 ? res.msg : this.$t('localization').network_error)
-        }
-      }).catch(err => {
-        this.tipsfn('error', this.$t('localization').network_error)
-      })
+        }).catch(err => {
+          this.tipsfn('error', this.$t('localization').network_error)
+        })
+      }
     }
+  },
+  mounted() {
+    this.timerStart()
   },
   watch: {
     meaNewData(val) {
-      this.timerStart();
+      if (val.length > 0) {
+        this.getChart(this.selIndex);
+      }
     }
   }
 }
