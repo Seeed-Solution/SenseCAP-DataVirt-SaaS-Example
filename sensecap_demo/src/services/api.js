@@ -1,5 +1,4 @@
-let protocol = window.location.protocol.indexOf('https') !== -1 ? 'https://' : 'http://'
-let apiHost = protocol + (protocol === 'https://' ? 'sensecap-demo2.seeed.cn:9001' : 'sensecap-demo.seeed.cn:9001')
+let apiHost = 'https://sensecap-demo2.seeed.cn:9001'
 let apiUrl = {
   control_api: {
     url: apiHost + '/dev/list', // 获取控制器状态
