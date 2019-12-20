@@ -4,6 +4,8 @@
 ## sensecap-demo
 * 前端代码（Vue）
 
+## 演示地址
+* https://sensecap-demo.seeed.cn/#/index
 # [文档说明 | Document](https://github.com/Seeed-Solution/SenseCAP-DataVirt-SaaS-Example/wiki)
 
 
