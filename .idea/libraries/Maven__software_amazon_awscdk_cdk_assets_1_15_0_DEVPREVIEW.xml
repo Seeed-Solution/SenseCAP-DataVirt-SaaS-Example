@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: software.amazon.awscdk:cdk-assets:1.15.0.DEVPREVIEW">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../maven/repository/software/amazon/awscdk/cdk-assets/1.15.0.DEVPREVIEW/cdk-assets-1.15.0.DEVPREVIEW.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../maven/repository/software/amazon/awscdk/cdk-assets/1.15.0.DEVPREVIEW/cdk-assets-1.15.0.DEVPREVIEW-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../maven/repository/software/amazon/awscdk/cdk-assets/1.15.0.DEVPREVIEW/cdk-assets-1.15.0.DEVPREVIEW-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

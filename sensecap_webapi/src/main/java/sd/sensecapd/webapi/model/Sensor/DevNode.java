@@ -33,8 +33,8 @@ public class DevNode {
         return null;
     }
 
-    public int getSensorsCount(){
-        return sensors.size();
+    public int getSensorsCount() {
+        return (sensors == null ? 0 : sensors.size());
     }
 
     public String getDev_eui() {

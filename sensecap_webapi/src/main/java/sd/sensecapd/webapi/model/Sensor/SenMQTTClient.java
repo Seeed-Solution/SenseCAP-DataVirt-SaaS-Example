@@ -6,6 +6,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import sd.sensecapd.webapi.model.CommTool;
 
@@ -25,21 +26,27 @@ public class SenMQTTClient implements Runnable {
     @Autowired
     SensorMQTTCallback sensorMQTTCallback;
 
+    @Value("${spring.sensor.OrganizationId}")
+    private String OrganizationId;
+    @Value("${spring.sensor.APIKey}")
+    private String apiKey;
+    @Value("${spring.sensor.host}")
+    private String host;
+
+
     @Override
     public void run() {
         try {
-            String partClientId = CommTool.readProperty("spring.sensor.ClientId");
-            String orgId = CommTool.readProperty("spring.sensor.OrganizationId");
-            String passWord = CommTool.readProperty("spring.sensor.APIKey");
-            String host = CommTool.readProperty("spring.sensor.host");
-            String userName = "org-" + orgId;
-            String topic = "/device_sensor_data/" + orgId + "/+/+/+/+";
+            String partClientId = CommTool.getRandomString(8);//CommTool.readProperty("spring.sensor.ClientId");
+
+            String userName = "org-" + OrganizationId;
+            String topic = "/device_sensor_data/" + OrganizationId + "/+/+/+/+";
             String clientId = userName + "-" + partClientId;//+ new Date().getTime();
             mqttClient = new MqttClient(host, clientId, new MemoryPersistence());
             options = new MqttConnectOptions();
             options.setCleanSession(false);
             options.setUserName(userName);
-            options.setPassword(passWord.toCharArray());
+            options.setPassword(apiKey.toCharArray());
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(60);
             mqttClient.setCallback(sensorMQTTCallback);

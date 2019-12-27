@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mysql:
+   container_name: mysql
+   #直接docker已有的镜像
+   image: mysql/mysql-server:5.7
+   #环境变量
+   environment:
+    MYSQL_DATABASE: sensecap_monitor
+    MYSQL_ROOT_PASSWORD: 1
+    MYSQL_ROOT_HOST: '%'
+  #配置了本地与容器的映射的端口，本地端口在前，容器端口在后
+   ports:
+   - "41030:3306"
+   #把mysql的数据文件映射到了本地mysqldata目录下。当容器删除后，数据还在。
+   volumes:
+     - ./mysql:/var/lib/mysql
+     - ./mysqldata:/docker-entrypoint-initdb.d
+   restart: always
+
+  sensecap_webapi:
+    restart: always
+    #指定dockerfile目录
+    build: ./sensecap_webapi
+    working_dir: /sensecap_webapi
+
+    volumes:
+      - ./sensecap_webapi:/sensecap_webapi
+      - ~/.m2:/root/.m2
+    expose:
+      - "9001"
+    depends_on:
+      - mysql
+    #运行容器中的项目，使用docker的profiles
+    command:  mvn clean spring-boot:run -Dspring-boot.run.profiles=docker

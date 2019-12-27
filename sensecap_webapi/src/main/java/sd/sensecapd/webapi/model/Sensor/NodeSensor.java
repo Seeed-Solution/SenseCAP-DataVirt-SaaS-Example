@@ -33,8 +33,8 @@ public class NodeSensor {
         return null;
     }
 
-    public int getSensorMeasureCount(){
-        return  sensor_measures.size();
+    public int getSensorMeasureCount() {
+        return (sensor_measures == null ? 0 : sensor_measures.size());
     }
 
     public int getId() {

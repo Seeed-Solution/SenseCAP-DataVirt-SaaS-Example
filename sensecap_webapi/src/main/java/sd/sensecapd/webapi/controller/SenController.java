@@ -171,7 +171,8 @@ public class SenController {
             JSONObject sensor = sensors.getJSONObject(i);
             String senEui = sensor.getString("sensor_eui");
             JSONArray measures = sensor.getJSONArray("sensor_measures");
-            int channel = sensor.getIntValue("sensor_channel");
+            //int channel = sensor.getIntValue("sensor_channel");
+            int channel = -1; //Temporarily unread
             NodeSensor nodeSensor = new NodeSensor();
             nodeSensor.setSensor_eui(senEui);
             nodeSensor.setDev_eui(devEui);
@@ -192,7 +193,6 @@ public class SenController {
 
         return nd1;
     }
-
     /*
     * get meta info of measures
     * */

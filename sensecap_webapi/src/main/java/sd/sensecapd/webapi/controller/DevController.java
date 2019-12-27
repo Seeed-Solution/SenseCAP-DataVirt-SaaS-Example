@@ -160,8 +160,8 @@ public class DevController {
         HttpHeaders headers = new HttpHeaders();
         String url = CommTool.readProperty("spring.dev.url");
         String at = CommTool.readProperty("spring.dev.at");
-        headers.set("Authorization", "Bearer " + at);
         headers.set("Content-Type", "application/json");
+        headers.set("Authorization", "Bearer " + at);
         HttpEntity entity = new HttpEntity(headers);
         Map<String, Object> requestMap = new HashMap<>();
         //switches API address for get switches' information
@@ -175,9 +175,9 @@ public class DevController {
         //Ergodic read the device
         for (int i = 0; i < lstDevices.size(); ++i) {
             JSONObject device = lstDevices.getJSONObject(i);
-            String deviceId = device.getString("deviceid");
             JSONObject params = device.getJSONObject("params");
             if (params == null) continue;
+            String deviceId = device.getString("deviceid");
             JSONArray switches = params.getJSONArray("switches");
 
             //Ergodic read the switch of the device

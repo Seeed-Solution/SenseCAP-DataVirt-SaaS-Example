@@ -52,7 +52,7 @@ public interface SensorDao {
      * update the normal value range of the sensor in db
      * */
     @Update("update tb_measure set minval=#{min},maxval=#{max} where measure_id=#{measure_id}")
-    void updateMeasureRange(int measure_id, double min, double max);
+    void updateMeasureRange(@Param("measure_id") int measure_id, @Param("min") double min, @Param("max") double max);
     /*
      * update value of the sensor in db
      * */

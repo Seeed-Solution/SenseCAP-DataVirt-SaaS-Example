@@ -76,11 +76,14 @@ class SensorMetaDataRefreshTask implements Runnable {
 
     @Override
     public void run() {
-        try {
-            senController.refresh();
-            Thread.sleep(3600000);
-        } catch (Exception e) {
-            logger.error(e.toString());
+        while (true) {
+            try {
+                logger.info("Begin refresh sensor data!");
+                senController.refresh();
+                Thread.sleep(300000);
+            } catch (Exception e) {
+                logger.error(e.toString());
+            }
         }
     }
 }
