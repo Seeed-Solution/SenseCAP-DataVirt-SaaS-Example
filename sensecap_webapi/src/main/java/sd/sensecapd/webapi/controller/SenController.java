@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import sd.sensecapd.webapi.model.CommTool;
@@ -22,10 +23,11 @@ import sd.sensecapd.webapi.service.SensorService;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
-* Web API controller for sensors
-* */
+ * Web API controller for sensors
+ * */
 @Service
 @RestController
 @RequestMapping("/sensor/node")
@@ -46,13 +48,21 @@ public class SenController {
     public HttpResponseMessage refresh() {
         List<String> nodes = getNodeList();
 
+        if (CollectionUtils.isEmpty(nodes)) {
+            logger.info("nodes is empty exit!");
+            return HttpResponseMessage.SUCCESS;
+        }
+
         for (int i = 0; i < nodes.size(); ++i) {
             DevNode nodeDetails = getNodeDetails(nodes.get(i));
             nodeService.saveDevNode(nodeDetails);
         }
 
         List<MeasureCate> measurecates = getMeasureCates();
-
+        if (CollectionUtils.isEmpty(measurecates)) {
+            logger.info("measurecates is empty exit!");
+            return HttpResponseMessage.SUCCESS;
+        }
         for (int i = 0; i < measurecates.size(); ++i) {
             nodeService.saveMeasureCate(measurecates.get(i));
         }
@@ -102,13 +112,14 @@ public class SenController {
      * */
     @RequestMapping(value = "/recentvalues", method = RequestMethod.GET)
     public HttpResponseMessage queryValuesLastMonth(int count) throws ParseException {
+        logger.warn("count:{}", count);
         List<SensorMeasureRecord> values = nodeService.queryRecentRecords(count);
         return new HttpResponseMessage(values);
     }
 
     /*
-    * get warnings from sensor
-    * */
+     * get warnings from sensor
+     * */
     @RequestMapping(value = "/warnings", method = RequestMethod.GET)
     public HttpResponseMessage getWarnings(long start, long end) {
         List<SensorWarning> current = nodeService.getWarnings(start, end);
@@ -116,8 +127,8 @@ public class SenController {
     }
 
     /*
-    * get resume of sensors
-    * */
+     * get resume of sensors
+     * */
     @RequestMapping(value = "/resume", method = RequestMethod.GET)
     public HttpResponseMessage getSensorStatusResume() {
         List<SensorStatusResume> resume = nodeService.getSensorStatusResume();
@@ -125,8 +136,8 @@ public class SenController {
     }
 
     /*
-    * get list of sensor nodes
-    * */
+     * get list of sensor nodes
+     * */
     private List<String> getNodeList() {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();
@@ -134,6 +145,10 @@ public class SenController {
         url += "/lists/devices/eui";
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         JSONObject body = responseEntity.getBody();
+        String code = body.getString("code");
+        if (Integer.parseInt(code) > 0) {
+            return Collections.EMPTY_LIST;
+        }
         JSONObject data = body.getJSONObject("data");
         JSONArray nodes = data.getJSONArray("node");
         List<String> lstNodeName = new ArrayList<String>();
@@ -145,8 +160,8 @@ public class SenController {
     }
 
     /*
-    * get details of sensor node
-    * */
+     * get details of sensor node
+     * */
     private DevNode getNodeDetails(String nodeId) {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();
@@ -193,9 +208,10 @@ public class SenController {
 
         return nd1;
     }
+
     /*
-    * get meta info of measures
-    * */
+     * get meta info of measures
+     * */
     private List<MeasureCate> getMeasureCates() {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();

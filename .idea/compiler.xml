@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="webapi" />
+        <module name="sensecap_webapi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="webapi" target="8" />
+      <module name="sensecap-webapi" target="1.8" />
+      <module name="sensecap_webapi" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

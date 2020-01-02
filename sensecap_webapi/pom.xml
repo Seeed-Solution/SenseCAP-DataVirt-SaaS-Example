@@ -9,11 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>sd.sensecapd</groupId>
-	<artifactId>webapi</artifactId>
+	<artifactId>sensecap_webapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>webapi</name>
+
 	<packaging>jar</packaging>
-	<description>webAPI project for Sensecap data Use Spring Boot</description>
 
 	<properties>
 		<java.version>8</java.version>
@@ -93,18 +92,9 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>seeed-maven-release-deploy</id>
-			<url>http://192.168.201.30:8081/nexus/repository/seeed-maven-release-deploy/</url>
-		</repository>
-		<snapshotRepository>
-			<id>seeed-maven-snapshot-deploy</id>
-			<name>Maven Central Staging Repository</name>
-			<url>http://192.168.201.30:8081/nexus/repository/seeed-maven-snapshot-deploy/</url>
-		</snapshotRepository>
-	</distributionManagement>
+
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -126,7 +116,7 @@
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.4.13</version>
+				<version>1.2.1</version>
 				<configuration>
 					<!-- made of '[a-z0-9-_.]' -->
 					<imageName>${project.artifactId}:${project.version}</imageName>
@@ -142,7 +132,6 @@
 			</plugin>
 		</plugins>
 
-		<finalName>sensecap_webapi</finalName>
 	</build>
 
 </project>

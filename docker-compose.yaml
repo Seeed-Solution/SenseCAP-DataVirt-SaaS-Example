@@ -1,13 +1,14 @@
 version: '3'
 services:
+
   mysql:
    container_name: mysql
    #直接docker已有的镜像
    image: mysql/mysql-server:5.7
    #环境变量
    environment:
-    MYSQL_DATABASE: sensecap_monitor
-    MYSQL_ROOT_PASSWORD: 1
+    MYSQL_DATABASE: sensecap_monitor     # 创建名为blog的库
+    MYSQL_ROOT_PASSWORD: 123456  # 设置root用户的密码
     MYSQL_ROOT_HOST: '%'
   #配置了本地与容器的映射的端口，本地端口在前，容器端口在后
    ports:
@@ -18,18 +19,42 @@ services:
      - ./mysqldata:/docker-entrypoint-initdb.d
    restart: always
 
-  sensecap_webapi:
+
+  webapi:
     restart: always
     #指定dockerfile目录
-    build: ./sensecap_webapi
+    container_name: webapi
+    depends_on:
+      - mysql
+    environment:
+      - IP=mysql
+      - PORT=3306
+      - PASSWORD=123456
+      - ORGID=${orgId}
+      - APIID=${apiId}
+      - APIKEY=${apiKey}
     working_dir: /sensecap_webapi
+    build:
+      context: .
+      dockerfile: ./sensecap_webapi/Dockerfile
 
+    #working_dir: .
     volumes:
       - ./sensecap_webapi:/sensecap_webapi
       - ~/.m2:/root/.m2
-    expose:
-      - "9001"
+    ports:
+      - "9001:9001"
+
+  webdemo:
+    restart: always
+    container_name: webdemo
+    working_dir: /sensecap_demo
+    build:
+      context: .
+      dockerfile: ./sensecap_demo/Dockerfile
+    ports:
+      - "6060:80"
     depends_on:
-      - mysql
-    #运行容器中的项目，使用docker的profiles
-    command:  mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+      - webapi
+    volumes:
+      - ./sensecap_demo:/sensecap_demo
