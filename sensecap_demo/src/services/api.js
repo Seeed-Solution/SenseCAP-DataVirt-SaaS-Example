@@ -1,4 +1,4 @@
-let apiHost = (window.location.protocol.indexOf('https') !== -1 ? 'https://' : 'http://') +'localhost:9001'
+let apiHost = (window.location.protocol.indexOf('https') !== -1 ? 'https://' : 'http://') +window.location.host+':9001'
 let apiUrl = {
   control_api: {
     url: apiHost + '/dev/list', // 获取控制器状态
