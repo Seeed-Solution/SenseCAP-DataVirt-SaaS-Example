@@ -15,7 +15,7 @@ services:
    - "41030:3306"
    #sql file
    volumes:
-     - ./sql:/var/lib/mysql
+     - ./database:/var/lib/mysql
      - ./mysqldata:/docker-entrypoint-initdb.d
    restart: always
 
