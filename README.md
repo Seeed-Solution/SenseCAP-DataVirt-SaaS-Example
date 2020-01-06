@@ -14,7 +14,7 @@ View Demo: [https://sensecap-demo.seeed.cn](https://sensecap-demo.seeed.cn)
 - sensecap-webapi
   - Get datas from the SenseCAP OpenAPI
   - Java built backend server
-  - Provide API for the Website 
+  - Provide API for the website 
 
 ## Document
 [https://github.com/Seeed-Solution/SenseCAP-DataVirt-SaaS-Example/wiki](https://github.com/Seeed-Solution/SenseCAP-DataVirt-SaaS-Example/wiki)
