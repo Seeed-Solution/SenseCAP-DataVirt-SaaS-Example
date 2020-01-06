@@ -41,7 +41,6 @@ services:
     #working_dir: .
     volumes:
       - ./sensecap_webapi:/sensecap_webapi
-      - ~/.m2:/root/.m2
     ports:
       - "9001:9001"
 
