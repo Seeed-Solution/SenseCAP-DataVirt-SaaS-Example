@@ -21,8 +21,8 @@ services:
     restart: always
     container_name: webapi
     depends_on:
-      mysql:
-        condition: service_healthy
+    - mysql:
+      condition: service_healthy
     environment:
     - IP=mysql
     - PORT=3306
