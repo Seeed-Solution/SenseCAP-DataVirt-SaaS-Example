@@ -1,38 +1,35 @@
 version: '3'
 services:
-
   mysql:
-   container_name: mysql
-   #
-   image: mysql/mysql-server:5.7
-   #env
-   environment:
-    MYSQL_DATABASE: sensecap_monitor     # create database sensecap_monitor;
-    MYSQL_ROOT_PASSWORD: 123456  # set pwd
-    MYSQL_ROOT_HOST: '%'
-  #
-   ports:
-   - "41030:3306"
-   #sql file
-   volumes:
-     - ./database:/var/lib/mysql
-     - ./mysqldata:/docker-entrypoint-initdb.d
-   restart: always
+    container_name: mysql
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: sensecap_monitor     # create database sensecap_monitor;
+      MYSQL_ROOT_PASSWORD: 123456  # set pwd
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_LOG_CONSOLE: true
+    ports:
+    - "41030:3306"
+    #sql file
+    volumes:
+    - ./database:/var/lib/mysql
+    - ./mysqldata:/docker-entrypoint-initdb.d
+    restart: always
 
 
   webapi:
     restart: always
-   
+
     container_name: webapi
     depends_on:
-      - mysql
+    - mysql
     environment:
-      - IP=mysql
-      - PORT=3306
-      - PASSWORD=123456
-      - ORGID=${orgId}
-      - APIID=${apiId}
-      - APIKEY=${apiKey}
+    - IP=mysql
+    - PORT=3306
+    - PASSWORD=123456
+    - ORGID=${orgId}
+    - APIID=${apiId}
+    - APIKEY=${apiKey}
     working_dir: /sensecap_webapi
     build:
       context: .
@@ -40,9 +37,9 @@ services:
 
     #working_dir: .
     volumes:
-      - ./sensecap_webapi:/sensecap_webapi
+    - ./sensecap_webapi:/sensecap_webapi
     ports:
-      - "9001:9001"
+    - "9001:9001"
 
   webdemo:
     restart: always
@@ -52,8 +49,8 @@ services:
       context: .
       dockerfile: ./sensecap_demo/Dockerfile
     ports:
-      - "6060:80"
+    - "6060:80"
     depends_on:
-      - webapi
+    - webapi
     volumes:
-      - ./sensecap_demo:/sensecap_demo
+    - ./sensecap_demo:/sensecap_demo
