@@ -49,7 +49,7 @@ public class SenController {
         List<String> nodes = getNodeList();
 
         if (CollectionUtils.isEmpty(nodes)) {
-            logger.info("nodes is empty exit!");
+            logger.info("nodes is empty exit! 5m later retry");
             return HttpResponseMessage.SUCCESS;
         }
 

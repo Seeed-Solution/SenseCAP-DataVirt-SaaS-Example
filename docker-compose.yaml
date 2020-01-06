@@ -37,7 +37,11 @@ services:
 
     #working_dir: .
     volumes:
+<<<<<<< HEAD
     - ./sensecap_webapi:/sensecap_webapi
+=======
+      - ./sensecap_webapi:/sensecap_webapi
+>>>>>>> c59770ddddedec936518c177429c3f30169d5c43
     ports:
     - "9001:9001"
 
