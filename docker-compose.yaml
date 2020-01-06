@@ -12,17 +12,17 @@ services:
     - "41030:3306"
     #sql file
     volumes:
-#    - ./database:/var/lib/mysql
+    #    - ./database:/var/lib/mysql
     - ./mysqldata:/docker-entrypoint-initdb.d
     restart: always
 
 
   webapi:
     restart: always
-
     container_name: webapi
     depends_on:
-    - mysql
+      mysql:
+        condition: service_healthy
     environment:
     - IP=mysql
     - PORT=3306
