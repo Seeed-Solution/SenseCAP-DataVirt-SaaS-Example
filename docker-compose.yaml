@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: sensecap_monitor     # create database sensecap_monitor;
       MYSQL_ROOT_PASSWORD: 123456  # set pwd
       MYSQL_ROOT_HOST: '%'
-      MYSQL_LOG_CONSOLE: true
+      MYSQL_LOG_CONSOLE: 'true'
     ports:
     - "41030:3306"
     #sql file
