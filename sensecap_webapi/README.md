@@ -1,4 +1,4 @@
-##1.Functions
+## 1.Functions
 #### This project is the back-end interface program of the 9th floor balcony project, whose functions include managing and receiving the status and data of the controller and sensor, and providing the front-end webpage related data interface. Interface details:： 
 + gets the list of controller switches. Access mode: GET, address: http://***:9001/dev/list
 ##### Request parameters
