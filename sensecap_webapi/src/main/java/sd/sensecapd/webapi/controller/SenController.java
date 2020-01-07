@@ -48,25 +48,18 @@ public class SenController {
     public HttpResponseMessage refresh() {
         List<String> nodes = getNodeList();
 
-        if (CollectionUtils.isEmpty(nodes)) {
-            logger.info("nodes is empty exit! 5m later retry");
-            return HttpResponseMessage.SUCCESS;
+        if (!CollectionUtils.isEmpty(nodes)) {
+            for (int i = 0; i < nodes.size(); ++i) {
+                DevNode nodeDetails = getNodeDetails(nodes.get(i));
+                nodeService.saveDevNode(nodeDetails);
+            }
         }
-
-        for (int i = 0; i < nodes.size(); ++i) {
-            DevNode nodeDetails = getNodeDetails(nodes.get(i));
-            nodeService.saveDevNode(nodeDetails);
-        }
-
         List<MeasureCate> measurecates = getMeasureCates();
-        if (CollectionUtils.isEmpty(measurecates)) {
-            logger.info("measurecates is empty exit!");
-            return HttpResponseMessage.SUCCESS;
+        if (!CollectionUtils.isEmpty(measurecates)) {
+            for (int i = 0; i < measurecates.size(); ++i) {
+                nodeService.saveMeasureCate(measurecates.get(i));
+            }
         }
-        for (int i = 0; i < measurecates.size(); ++i) {
-            nodeService.saveMeasureCate(measurecates.get(i));
-        }
-
         logger.info("Refresh sensor data completed!");
         return HttpResponseMessage.SUCCESS;
     }
