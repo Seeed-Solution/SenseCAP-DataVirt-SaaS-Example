@@ -171,7 +171,7 @@ public class DevController {
         JSONObject obj = responseEntity.getBody();
         JSONArray lstDevices = obj.getJSONArray("devicelist");
         if (lstDevices == null) lstDevices = new JSONArray();
-
+        logger.warn("url:[{}],responese body:{}",url,obj.toString());
         //Ergodic read the device
         for (int i = 0; i < lstDevices.size(); ++i) {
             JSONObject device = lstDevices.getJSONObject(i);
