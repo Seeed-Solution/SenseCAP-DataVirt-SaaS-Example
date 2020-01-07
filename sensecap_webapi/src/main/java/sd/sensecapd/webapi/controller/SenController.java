@@ -160,7 +160,7 @@ public class SenController {
         Map<String, Object> requestMap = new HashMap<>();
         String url = CommTool.readProperty("spring.sensor.url") + "/node/" + nodeId;
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
-        logger.info(responseEntity.toString());
+        logger.warn("url:{},response:{}",responseEntity.toString());
         JSONObject body = responseEntity.getBody();
         JSONObject data = body.getJSONObject("data");
         int online_status = data.getIntValue("online_status");
@@ -247,7 +247,9 @@ public class SenController {
 
     private HttpEntity getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", getHeader());
+        String header = getHeader();
+        headers.set("Authorization", header);
+        logger.warn("Authorization:[{}]",header);
         headers.set("Content-Type", "application/json");
         return new HttpEntity(headers);
     }
@@ -256,6 +258,7 @@ public class SenController {
         String appkey = CommTool.readProperty("spring.sensor.APIID");
         String seckey = CommTool.readProperty("spring.sensor.APIKey");
         String auth = appkey + ":" + seckey;
+        logger.warn("getHeader auth:[{}]",auth);
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
         return "Basic " + new String(encodedAuth);
     }
