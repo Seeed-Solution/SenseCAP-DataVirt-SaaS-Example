@@ -54,7 +54,7 @@ public class SenMQTTClient implements Runnable {
             int[] Qos = {1};
             String[] topic1 = {topic};
             mqttClient.subscribe(topic1, Qos);
-            logger.info("MQTTClient started!");
+            logger.info("MQTTClient started! ID:[{}],apiKey:[{}]",OrganizationId,apiKey);
 
         } catch (Exception e) {
             e.printStackTrace();
