@@ -30,7 +30,10 @@ services:
     - ORGID=${orgId}
     - APIID=${apiId}
     - APIKEY=${apiKey}
+
     working_dir: /sensecap_webapi
+    env_file:
+      - ./.env
     build:
       context: .
       dockerfile: ./sensecap_webapi/Dockerfile
