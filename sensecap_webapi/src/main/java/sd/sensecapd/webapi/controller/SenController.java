@@ -212,6 +212,9 @@ public class SenController {
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         logger.info(responseEntity.toString());
         JSONObject body = responseEntity.getBody();
+        if(Integer.parseInt(body.get("code").toString())>0){
+            return Collections.EMPTY_LIST;
+        }
         JSONArray data = body.getJSONArray("data");
         List<MeasureCate> result = new ArrayList<MeasureCate>();
         //Ergodic read out the measure's category
