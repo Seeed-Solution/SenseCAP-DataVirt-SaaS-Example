@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: ./sensecap_webapi/Dockerfile
-
+    #image: sensecap-datavirt-saas-example_webapi
     #working_dir: .
     volumes:
     - ./sensecap_webapi:/sensecap_webapi
@@ -46,6 +46,7 @@ services:
     restart: always
     container_name: webdemo
     working_dir: /sensecap_demo
+    #image: sensecap-datavirt-saas-example_webdemo
     build:
       context: .
       dockerfile: ./sensecap_demo/Dockerfile
@@ -54,4 +55,5 @@ services:
     depends_on:
     - webapi
     volumes:
+    #- ./sensecap_demo/img:/usr/share/nginx/html/img
     - ./sensecap_demo:/sensecap_demo
