@@ -1,7 +1,7 @@
 <template>
 <div class="status-per">
   <div class="title bold">{{$t('localization').mea_range}}</div>
-  <div class="per-all scollbar">
+  <div class="per-all scollbar" :class="{'big': isBig}">
     <div class="per" v-for="(elem, inde) in dataList" :key="inde + 'range'" v-if="dataList.length > 0">
       <span class="img">
         <img :src="require('../../../assets/images/physical_white/' + elem.measure_id + '.png')" alt="">
@@ -20,6 +20,12 @@ import utils from "../../../assets/js/utils"
 import config from "../../../config"
 export default {
   name: "range",
+  props: {
+    isBig: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       dataList: []
@@ -55,12 +61,12 @@ export default {
 @import "../index.scss";
 div.status-per {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     width: 49%;
     text-align: center;
     background: rgba(175, 211, 249, 0.1);
     min-width: 4rem;
-    height: 1.32rem;
+    min-height: 1.32rem;
     div.title {
         background: rgba(2,22,42,0.6);
         font-size: 0.12rem;
@@ -73,6 +79,9 @@ div.status-per {
         height: 1rem;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+    div.per-all.big {
+        height: 2.5rem;
     }
     div.per {
         display: inline-block;

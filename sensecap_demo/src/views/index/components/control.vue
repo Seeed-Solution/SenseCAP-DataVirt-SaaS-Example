@@ -7,8 +7,7 @@
         <span class="icon" :class="{'active': irrigation.status}">
           <img :src="require(irrigation.status ? '../../../assets/images/control/irrigation.png' : '../../../assets/images/control/irrigation_black.png')" />
         </span>
-        <span class="control-name bold">{{$t('localization').control_water}}<span style="font-size:10px;"
-            :style="{'color': irrigation.status ? '#3f8c4b' : '#9a9a9a'}">（{{irrigation.status ? $t('localization').online : $t('localization').offline}}）</span></span>
+        <span class="control-name bold">{{$t('localization').control_water}}<span style="font-size:10px;" :style="{'color': irrigation.status ? '#3f8c4b' : '#9a9a9a'}">（{{irrigation.status ? $t('localization').online : $t('localization').offline}}）</span></span>
         <span class="control-switch">
           <label class="first transition" :class="{'white': !irrigation.switch, 'no': !irrigation.status}" @click.stop="changeStatus(1)">{{$t('localization').open}}</label>
           <label class="last transition" :class="{'white': irrigation.switch, 'no': !irrigation.status}" @click.stop="changeStatus(2)">{{$t('localization').close}}</label>
@@ -39,8 +38,7 @@
         <span class="icon" :class="{'active': shade.status}">
           <img :src="require(shade.status ? '../../../assets/images/control/sunshade.png' : '../../../assets/images/control/sunshade_black.png')" />
         </span>
-        <span class="control-name bold">{{$t('localization').control_shade}}<span style="font-size:10px;"
-            :style="{'color': shade.status ? '#3f8c4b' : '#9a9a9a'}">（{{shade.status ? $t('localization').online : $t('localization').offline}}）</span></span>
+        <span class="control-name bold">{{$t('localization').control_shade}}<span style="font-size:10px;" :style="{'color': shade.status ? '#3f8c4b' : '#9a9a9a'}">（{{shade.status ? $t('localization').online : $t('localization').offline}}）</span></span>
         <span class="control-switch">
           <label class="first transition" :class="{'white': shade.switch !== 1}" @click.stop="changeStatus(7)">{{$t('localization').open}}</label>
           <label class="transition" :class="{'stop': shade.switch !== -1}" @click.stop="changeStatus(8)">{{$t('localization').stop}}</label>
@@ -61,10 +59,26 @@ export default {
   name: "control",
   data() {
     return {
-      irrigation: {}, // 控制灌溉水泵的开关 true为开启状态，false为关闭状态
-      fan: {}, // 控制通风风机的开关 true为开启状态，false为关闭状态
-      light: {}, // 控制补光灯的开关 true为开启状态，false为关闭状态
-      shade: {}, // 控制遮阳帘的开关 1为开启状态，0为关闭状态 -1为停止状态
+      irrigation: {
+        switch: false,
+        status: 0,
+        'id': '5'
+      }, // 控制灌溉水泵的开关 true为开启状态，false为关闭状态
+      fan: {
+        switch: false,
+        status: 0,
+        'id': '6'
+      }, // 控制通风风机的开关 true为开启状态，false为关闭状态
+      light: {
+        switch: false,
+        status: 0,
+        'id': '7'
+      }, // 控制补光灯的开关 true为开启状态，false为关闭状态
+      shade: {
+        switch: false,
+        status: 0,
+        'id': '8'
+      }, // 控制遮阳帘的开关 1为开启状态，0为关闭状态 -1为停止状态
     }
   },
   methods: {
@@ -226,7 +240,7 @@ export default {
                     height: 0.5rem;
                     line-height: 0.5rem;
                     font-size: 0;
-                    margin-right: 0.2rem;
+                    margin-right: 0.1rem;
                     text-align: center;
                     label {
                         display: inline-block;

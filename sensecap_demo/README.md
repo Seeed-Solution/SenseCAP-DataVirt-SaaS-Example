@@ -1,36 +1,83 @@
 # sensecap_demo
 
-#### Description
+#### 介绍
+
 sensecap demo
 
-#### Software Architecture
-Software architecture description
+#### 软件架构
 
-#### Installation
+软件架构说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### npm install 安装所有依赖
 
-#### Instructions
+#### npm run dev 本地运行(localhost:6060)
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### npm run build 打包
 
-#### Contribution
+#### views/index/index.vue 主页
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+#### views/index/components/control.vue 控制中心
 
+#### views/index/components/warning.vue 报警中心
 
-#### Gitee Feature
+#### views/index/components/chart.vue 测量类型图表
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### views/index/components/history.vue 历史数据
+
+#### views/index/components/range.vue 测量正常范围
+
+#### views/index/components/run.vue 设备运行情况
+
+#### views/index/components/soil.vue 土壤状况
+
+#### views/index/components/meteorology.vue 环境状况
+
+#### views/index/components/video.vue 视频状况
+
+#### services/ajax.js 封装ajax文件 便于对ajax调用的统一管理
+
+##### 调用方式：
+
+##### 例：get方式
+
+      (```)
+          ajax.getData(api_url, {
+               params: {
+                 id: 001
+               }
+            }).then(res => {
+                if (res.code == 0) {
+
+                } else {
+
+                }
+              }).catch(err => {
+
+                })
+      (```)
+
+##### post方式(patch/patchData、delete/deleteData、put/putData)
+
+      (```)
+          ajax.postData(api_url, {
+              id: 001
+            }).then(res => {
+                if (res.code == 0) {
+
+                } else {
+
+                }
+              }).catch(err => {
+
+                })
+      (```)
+
+#### services/api.js 封装所有的api 便于多页面调用
+
+#### config/index.js 参数配置(更新数据时间)
+
+#### assets/lang/cn.js 中文
+
+#### assets/lang/en.js 英文
+
+##### main.js 中可配置语言

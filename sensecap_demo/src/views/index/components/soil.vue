@@ -1,7 +1,7 @@
 <template>
 <div class="top mb10 ml10 green-border transition">
   <div class="content">
-    <h1 v-if="soilData && soilData.length > 0">{{$t('localization.class' + soilData[0].class_id)}}</h1>
+    <h1>{{$t('localization').class2}}</h1>
     <div class="tabs">
       <span @click.stop="getIndex(inde)" v-for="(elem, inde) in soilData" :key="inde + 'soil'" v-if="inde < 4 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>

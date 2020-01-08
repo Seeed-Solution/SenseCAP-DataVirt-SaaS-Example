@@ -1,7 +1,7 @@
 <template>
 <div class="status-per">
   <div class="title bold">{{$t('localization').dev_run}}</div>
-  <div class="per-all scollbar">
+  <div class="per-all scollbar" :class="{'big': isBig}">
     <div class="per-big" v-for="(elem, inde) in list" :key="elem.classId + inde + 'run'">
       <div class="left">
         <div class="img"><img :src="require('../../../assets/images/' + (elem.classId == 1 ? 'surrounding' : 'soil') + '.png')" alt=""></div>
@@ -24,6 +24,12 @@ import {
 import config from "../../../config"
 export default {
   name: "run",
+  props: {
+    isBig: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     list: []
   }),
@@ -60,9 +66,9 @@ export default {
 @import "../index.scss";
 div.status-per {
     min-width: 4rem;
-    height: 1.32rem;
+    min-height: 1.32rem;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     width: 49%;
     text-align: center;
     background: rgba(175, 211, 249, 0.1);
@@ -125,6 +131,9 @@ div.status-per {
                 }
             }
         }
+    }
+    div.per-all.big {
+        height: 2.5rem;
     }
 }
 </style>

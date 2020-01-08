@@ -9,7 +9,7 @@
       </div>
     </div>
     <!-- 控制中心 -->
-    <my-control :langVal="langVal"></my-control>
+    <my-control></my-control>
     <!-- 报警中心 -->
     <my-warning :langVal="langVal"></my-warning>
   </div>
@@ -21,9 +21,9 @@
     <my-history :langVal="langVal"></my-history>
     <div class="status">
       <!-- 报警阈值范围 -->
-      <my-range :langVal="langVal"></my-range>
+      <my-range :isBig="meaNewData && meaNewData.length > 7 ? false : true"></my-range>
       <!-- 设备运行情况 -->
-      <my-run :langVal="langVal"></my-run>
+      <my-run :isBig="meaNewData && meaNewData.length > 7 ? false : true"></my-run>
     </div>
   </div>
   <div class="right">
