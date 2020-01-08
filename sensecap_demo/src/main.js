@@ -77,8 +77,8 @@ router.beforeEach((to, from, next) => {
 const i18n = new VueI18n({
   locale: utils.getLanguage() && (utils.getLanguage() === 'cn' || utils.getLanguage() === 'en') ? utils.getLanguage() : (window.location.host.indexOf('.seeed.cn') !== -1 ? 'cn' : 'en'), // 语言标识,默认英语,先去缓存中查找，如果存在并有效，缓存值即为默认语言类型；否则默认为英语
   messages: {
-    'en': Object.assign(require('./assets/lang/en'), enLocale),
-    'cn': Object.assign(require('./assets/lang/cn'), zhLocale)
+    'en': Object.assign(require('static/lang/en'), enLocale),
+    'cn': Object.assign(require('static/lang/cn'), zhLocale)
   }
 })
 
