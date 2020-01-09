@@ -10,12 +10,7 @@ services:
       MYSQL_LOG_CONSOLE: 'true'
     ports:
     - "41030:3306"
-    #sql file
-    volumes:
-    #- ./database:/var/lib/mysql
-    - ./mysqldata:/docker-entrypoint-initdb.d
     restart: always
-
 
   webapi:
     restart: always
@@ -37,8 +32,8 @@ services:
       dockerfile: ./sensecap_webapi/Dockerfile
     #image: sensecap-datavirt-saas-example_webapi
     #working_dir: .
-    volumes:
-    - ./sensecap_webapi:/sensecap_webapi
+    #volumes:
+    #- ./sensecap_webapi:/sensecap_webapi
     ports:
     - "9001:9001"
 
@@ -54,6 +49,6 @@ services:
     - "6060:80"
     depends_on:
     - webapi
-    volumes:
+    #volumes:
     #- ./sensecap_demo/img:/usr/share/nginx/html/img
-    - ./sensecap_demo:/sensecap_demo
+    #- ./sensecap_demo:/sensecap_demo
