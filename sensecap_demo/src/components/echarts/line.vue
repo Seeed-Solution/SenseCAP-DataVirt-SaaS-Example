@@ -129,25 +129,16 @@ export default {
           },
           formatter: (params) => {
             let str = '';
-            if (params.length > 1) {
+            if (params && params.length > 1) {
               for (var i = 0; i < params.length; i++) {
                 let data = params[i];
-                let date = new Date(data.value[0]);
-                str = (str + (i === 0 ? ((date.getFullYear() + '-') + ((date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-') + (date.getDate() > 9 ? date.getDate() + ' ' : '0' + date
-                  .getDate() +
-                  ' ') + (date
-                  .getHours() > 9 ? date.getHours() + ':' : '0' + date.getHours() + ':') + (date.getMinutes() > 9 ? date.getMinutes() + ':' : '0' + date.getMinutes() + ':') + (date.getSeconds() > 9 ? date.getSeconds() : '0' + date
-                  .getSeconds()) + '<br/>') : '') + data.name + ': ' + data.value[1] + (i !== data.length ? '<br />' : ''))
+                let dateN = new Date(data.value[0].replace(new RegExp(/-/gm) ,"/"));
+                str = str + (i === 0 ? ((dateN.getFullYear() + '-') + ((dateN.getMonth() + 1 < 10 ? '0' + (dateN.getMonth() + 1) : dateN.getMonth() + 1) + '-') + (dateN.getDate() > 9 ? dateN.getDate() + ' ' : '0' + dateN.getDate() + ' ') + (dateN.getHours() > 9 ? dateN.getHours() + ':' : '0' + dateN.getHours() + ':') + (dateN.getMinutes() > 9 ? dateN.getMinutes() + ':' : '0' + dateN.getMinutes() + ':') + (dateN.getSeconds() > 9 ? dateN.getSeconds() : '0' + dateN.getSeconds()) + '<br/>') : '') + data.name + ': ' + data.value[1] + (i !== data.length ? '<br />' : '')
               }
             } else {
               let data = params[0];
-              let date = new Date(data.value[0]);
-              str = '(' + str + ((date.getFullYear() + '-') + ((date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) :
-                date
-                .getMonth() + 1) + '-') + (date.getDate() > 9 ? date.getDate() + ' ' : '0' + date.getDate() +
-                ' ') + (date
-                .getHours() > 9 ? date.getHours() + ':' : '0' + date.getHours() + ':') + (date.getMinutes() > 9 ? date.getMinutes() + ':' : '0' + date.getMinutes() + ':') + (date.getSeconds() > 9 ? date.getSeconds() : '0' + date
-                .getSeconds())) + ')' + ': ' + data.value[1]
+              let dateN = new Date(data.value[0].replace(new RegExp(/-/gm) ,"/"));
+              str = str + (dateN.getFullYear() + ((dateN.getMonth() + 1 < 10 ? '0' + (dateN.getMonth() + 1) : dateN.getMonth() + 1) + '-') + (dateN.getDate() > 9 ? dateN.getDate() + ' ' : '0' + dateN.getDate() + ' ') + (dateN.getHours() > 9 ? dateN.getHours() + ':' : '0' + dateN.getHours() + ':') + (dateN.getMinutes() > 9 ? dateN.getMinutes() + ':' : '0' + dateN.getMinutes() + ':') + (dateN.getSeconds() > 9 ? dateN.getSeconds() : '0' + dateN.getSeconds())) + ': ' + data.value[1]
             }
             return str
           },

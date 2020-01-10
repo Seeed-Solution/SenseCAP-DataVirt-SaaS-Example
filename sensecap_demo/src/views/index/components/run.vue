@@ -22,6 +22,7 @@ import {
   ajax
 } from "Services/ajax"
 import config from "../../../config"
+import utils from "../../../assets/js/utils"
 export default {
   name: "run",
   props: {
@@ -34,6 +35,12 @@ export default {
     list: []
   }),
   methods: {
+    tipsfn(type, text) {
+      this.$store.dispatch('showMessageTip', {
+        type: type,
+        text: text
+      });
+    },
     getList() {
       ajax.getData(window.apiUrl.run_api.url).then(res => {
         if (res.code == 0) {
