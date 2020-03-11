@@ -90,6 +90,8 @@ export default {
         ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meteorologyData[index].dev_eui + '&measure_id=' + this.meteorologyData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {
           if (res.code == 0) {
             if (res.data && res.data.length > 0) {
+              res.data = utils.sortByKey(res.data, 'time');
+              res.data = utils.deduplication(res.data, 'time', 'value');
               for (var i = 0; i < res.data.length; i++) {
                 opinionData.push({
                   value: res.data[i] ? [this.timefn(res.data[i].time), res.data[i].value] : []
