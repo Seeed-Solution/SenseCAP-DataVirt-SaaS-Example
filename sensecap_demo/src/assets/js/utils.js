@@ -51,7 +51,7 @@ export default {
   timefn (timestamp) {
     var date, Y, M, D, h, m, s
     timestamp = Number(timestamp)
-    if (timestamp > 100000000) {
+    if (timestamp > 9999999999) {
       date = new Date(parseInt(timestamp))
     } else {
       date = new Date(parseInt(timestamp) * 1000) // 时间戳转换为毫秒
@@ -67,7 +67,7 @@ export default {
   enTimefn (timestamp) {
     var date, Y, M, D, h, m, s
     timestamp = Number(timestamp)
-    if (timestamp > 100000000) {
+    if (timestamp > 9999999999) {
       date = new Date(parseInt(timestamp))
     } else {
       date = new Date(parseInt(timestamp) * 1000) // 时间戳转换为毫秒
