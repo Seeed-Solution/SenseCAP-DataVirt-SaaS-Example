@@ -58,31 +58,33 @@
 </div>
 </template>
 <script>
-// 浏览器全屏
-import screenfull from 'screenfull'
-// 控制中心
-import myControl from "./components/control"
-// 报警中心
-import myWarning from "./components/warning"
-// 图表
-import myChart from "./components/chart"
-// 历史数据
-import myHistory from "./components/history"
-// 报警阈值范围
-import myRange from "./components/range"
-// 设备运行情况
-import myRun from "./components/run"
-// 土壤状况
-import mySoil from "./components/soil"
-// 气象状况
-import myMeteorology from "./components/meteorology"
-// 视频
-import myVideo from "./components/video"
 import {
   ajax
 } from "Services/ajax"
 import config from "../../config"
 import utils from "../../assets/js/utils"
+
+// 浏览器全屏
+import screenfull from 'screenfull'
+
+// 控制中心
+const myControl = () => import("./components/control")
+// 报警中心
+const myWarning = () => import("./components/warning")
+// 图表
+const myChart = () => import("./components/chart")
+// 历史数据
+const myHistory = () => import("./components/history")
+// 报警阈值范围
+const myRange = () => import("./components/range")
+// 设备运行情况
+const myRun = () => import("./components/run")
+// 土壤状况
+const mySoil = () => import("./components/soil")
+// 气象状况
+const myMeteorology = () => import("./components/meteorology")
+// 视频
+const myVideo = () => import("./components/video")
 
 export default {
   name: "index",

@@ -27,8 +27,7 @@
         <span class="icon" :class="{'active': light.status}">
           <img :src="require(light.status ? '../../../assets/images/control/light.png' : '../../../assets/images/control/light_black.png')" />
         </span>
-        <span class="control-name bold">{{$t('localization').control_light}}<span style="font-size:10px;" :style="{'color': light.status ? '#3f8c4b' : '#9a9a9a'}">（{{light.status ? $t('localization').online :
-            $t('localization').offline}}）</span></span>
+        <span class="control-name bold">{{$t('localization').control_light}}<span style="font-size:10px;" :style="{'color': light.status ? '#3f8c4b' : '#9a9a9a'}">（{{light.status ? $t('localization').online : $t('localization').offline}}）</span></span>
         <span class="control-switch">
           <label class="first transition" :class="{'white': !light.switch, 'no': !light.status}" @click.stop="changeStatus(5)">{{$t('localization').open}}</label>
           <label class="last transition" :class="{'white': light.switch, 'no': !light.status}" @click.stop="changeStatus(6)">{{$t('localization').close}}</label>

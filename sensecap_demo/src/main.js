@@ -13,22 +13,27 @@ import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 import {
   routes
 } from './router/routerConfig'
-import './assets/fonts/font-style'
-import 'babel-polyfill'
-import Es6Promise from 'es6-promise'
-// 引入echarts
-import echarts from 'echarts'
-// 引入api
+
 import {
   msWebApiRoot
 } from './services/api'
+
+import 'babel-polyfill'
+import Es6Promise from 'es6-promise'
+
+// 引入echarts
+import echarts from 'echarts'
+
 import utils from './assets/js/utils'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
 Vue.prototype.$echarts = echarts
 Vue.config.debug = true // 开启错误提示
+
+require('./assets/fonts/font-style')
 require('./assets/scss/common') // 加载全局公共样式
+
 require('es6-promise').polyfill()
 require('es6-promise/auto')
 require('./assets/js/rem.js')
@@ -66,6 +71,7 @@ const router = new VueRouter({
   routes,
   scrollBehavior: scrollBehavior
 })
+
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {

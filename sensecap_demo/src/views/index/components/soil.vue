@@ -14,9 +14,7 @@
         <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
       </span>
     </div>
-    <my-line :langVal="langVal" fontSize="10" :height="soilData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'soilline' + soilData[selIndex].measure_id + selIndex"
-      :titleText="$t('localization.measurements' + soilData[selIndex].measure_id) + '(' + soilData[selIndex].unit + ') ' + '(' + soilData[selIndex].dev_eui + ')'" :opinion="[soilData[selIndex].measure_id]" :opinionData="opinionData"
-      class="charts-all" v-if="selIndex != null && soilData[selIndex] && soilData[selIndex].measure_id"></my-line>
+    <my-line :langVal="langVal" fontSize="10" :height="soilData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'soilline' + soilData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + soilData[selIndex].measure_id) + '(' + soilData[selIndex].unit + ') ' + '(' + soilData[selIndex].dev_eui + ')'" :opinion="[soilData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && soilData[selIndex] && soilData[selIndex].measure_id"></my-line>
   </div>
 </div>
 </template>

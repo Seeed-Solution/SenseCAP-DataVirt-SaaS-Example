@@ -15,8 +15,7 @@
   </div>
   <div class="chart">
     <div class="content">
-      <my-line :langVal="langVal" :idStr="'linechart' + meaNewData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + meaNewData[selIndex].measure_id) + '(' + meaNewData[selIndex].unit + ') ' + '(' + meaNewData[selIndex].dev_name + ')'"
-        :opinion="[meaNewData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meaNewData[selIndex] && meaNewData[selIndex].measure_id"></my-line>
+      <my-line :langVal="langVal" :idStr="'linechart' + meaNewData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + meaNewData[selIndex].measure_id) + '(' + meaNewData[selIndex].unit + ') ' + '(' + meaNewData[selIndex].dev_name + ')'" :opinion="[meaNewData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meaNewData[selIndex] && meaNewData[selIndex].measure_id"></my-line>
     </div>
   </div>
 </div>
@@ -85,9 +84,7 @@ export default {
     getChart(index) {
       // 最近一周数据
       if (this.meaNewData[index]) {
-        let time_end = this.meaNewData[index] && this.meaNewData[index].time && this.meaNewData[index].time.toString().length > 10 ? this.meaNewData[index].time : (this.meaNewData[index].time && this.meaNewData[index].time.toString().length == 10 ? Number(this.meaNewData[index]
-            .time) * 10 :
-          new Date().getTime());
+        let time_end = this.meaNewData[index] && this.meaNewData[index].time && this.meaNewData[index].time.toString().length > 10 ? this.meaNewData[index].time : (this.meaNewData[index].time && this.meaNewData[index].time.toString().length == 10 ? Number(this.meaNewData[index].time) * 10 : new Date().getTime());
         let time_start = Number(time_end) - 86400000 * 7;
         let opinionData = [];
         ajax.getData(window.apiUrl.line_data.url + '?dev_eui=' + this.meaNewData[index].dev_eui + '&measure_id=' + this.meaNewData[index].measure_id + '&start=' + time_start + '&end=' + time_end).then(res => {

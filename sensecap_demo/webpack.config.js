@@ -6,8 +6,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin') // css提取插�
 var CopyWebpackPlugin = require('copy-webpack-plugin') // 复制文件
 var CleanPlugin = require('clean-webpack-plugin') // webpack插件，用于清除目录文件
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 var production = process.env.NODE_ENV
-var cssLoaders = function (options) {
+var cssLoaders = function(options) {
   options = options || {}
   const cssLoader = {
     loader: 'css-loader',
@@ -23,7 +24,7 @@ var cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
@@ -62,7 +63,7 @@ var cssLoaders = function (options) {
   }
 }
 
-var styleLoaders = function (options) {
+var styleLoaders = function(options) {
   const output = []
   const loaders = cssLoaders(options)
 
@@ -77,7 +78,7 @@ var styleLoaders = function (options) {
   return output
 }
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV == 'server'
 const sourceMapEnabled = isProduction
 
 var vueLoaderOptions = {
@@ -102,7 +103,8 @@ var config = {
   // 入口文件地址
   entry: {
     index: ['babel-polyfill', './src/main.js'],
-    vendor: ['vue', 'vue-router', 'vuex', 'axios', 'jquery']
+    vendor: ['vue', 'vue-router', 'vuex', 'axios', 'jquery'],
+    common: ['element-ui', 'echarts']
   },
   // 输出
   output: {
@@ -131,43 +133,47 @@ var config = {
   module: {
     // 加载器
     rules: [{
-      test: /\.js$/,
-      include: path.join(__dirname, 'src'),
-      exclude: /node_modules/,
-      use: ['babel-loader?cacheDirectory']
-    },
-    {
-      test: /\.vue$/,
-      loader: 'vue-loader',
-      options: vueLoaderOptions
-    },
-    {
-      test: /\.json$/,
-      use: ['json-loader']
-    },
-    {
-      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-      loader: 'url-loader',
-      options: {
-        limit: 10000,
-        name: 'img/[name].[hash:7].[ext]'
+        test: /\.js$/,
+        include: path.join(__dirname, 'src'),
+        exclude: /node_modules/,
+        use: ['babel-loader?cacheDirectory']
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueLoaderOptions
+      },
+      {
+        test: /\.json$/,
+        use: ['json-loader']
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 5000,
+            name: 'img/[name].[hash:7].[ext]'
+          }
+        }, {
+          loader: 'image-webpack-loader'
+        }]
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader?name=fonts/[name].[ext]',
+        options: {
+          limit: 5000,
+          name: 'img/[name].[hash:7].[ext]'
+        }
+      },
+      {
+        test: /\.swf$/,
+        loader: 'url-loader',
+        options: {
+          limit: 5000
+        }
       }
-    },
-    {
-      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-      loader: 'url-loader?name=fonts/[name].[ext]',
-      options: {
-        limit: 10000,
-        name: 'img/[name].[hash:7].[ext]'
-      }
-    },
-    {
-      test: /\.swf$/,
-      loader: 'url-loader',
-      options: {
-        limit: 10000
-      }
-    }
     ]
   },
   plugins: [
@@ -205,23 +211,24 @@ if (isProduction) {
     },
     module: {
       rules: styleLoaders({
-        sourceMap: true,
+        sourceMap: false,
         extract: true,
         usePostCSS: true
       })
     },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: '"production"'
-        }
-      }),
       new ExtractTextPlugin('css/[name].[hash:8].css', {
         allChunks: true
       }),
+      new OptimizeCssAssetsPlugin(), // 压缩CSS文件的插件
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
+        }
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
         }
       }),
       new webpack.optimize.CommonsChunkPlugin({
@@ -245,6 +252,28 @@ if (isProduction) {
         },
         // necessary to consistently work with multiple chunks via CommonsChunkPlugin
         chunksSortMode: 'dependency'
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: ['vendor', 'runtime'], // 将公共模块提取，生成名为`vendors`的chunk
+        minChunks: function(module, count) {
+          // console.log(module.resource, `引用次数${count}`);
+          //"有正在处理文件" + "这个文件是 .js 后缀" + "这个文件是在 node_modules 中"
+          return (
+            module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf(path.join(__dirname, './node_modules')) === 0
+          )
+        }
+      }),
+      // extract webpack runtime and module manifest to its own file in order to
+      // prevent vendor hash from being updated whenever app bundle is updated
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'manifest',
+        chunks: ['vendor']
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        children: true,
+        async: 'children-async'
       })
     ]
   }
@@ -280,17 +309,17 @@ if (isProduction) {
     },
     plugins: [
       new CopyWebpackPlugin([{
-        from: 'src/assets/images',
-        to: 'images'
-      },
-      {
-        from: 'src/assets/css',
-        to: 'css'
-      },
-      {
-        from: 'src/assets/fonts',
-        to: 'fonts'
-      }
+          from: 'src/assets/images',
+          to: 'images'
+        },
+        {
+          from: 'src/assets/css',
+          to: 'css'
+        },
+        {
+          from: 'src/assets/fonts',
+          to: 'fonts'
+        }
       ]),
       new HtmlWebpackPlugin({
         title: '智慧农业监控数据平台',
