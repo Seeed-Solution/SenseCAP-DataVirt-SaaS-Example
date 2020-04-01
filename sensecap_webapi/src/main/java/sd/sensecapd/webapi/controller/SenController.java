@@ -185,6 +185,10 @@ public class SenController {
             JSONObject sensor = sensors.getJSONObject(i);
             String senEui = sensor.getString("sensor_eui");
             JSONArray measures = sensor.getJSONArray("sensor_measure");
+<<<<<<< HEAD
+=======
+            //System.out.println(sensor.toJSONString());
+>>>>>>> 修改获取measure为null情况
             //int channel = sensor.getIntValue("sensor_channel");
             int channel = -1; //Temporarily unread
             NodeSensor nodeSensor = new NodeSensor();
@@ -193,7 +197,7 @@ public class SenController {
             nodeSensor.setSensor_channel(channel);
             nd1.addSensor(nodeSensor);
             
-            if(CollectionUtils.isEmpty(measures)){
+            if(measures==null){
                 continue;
             }
             
