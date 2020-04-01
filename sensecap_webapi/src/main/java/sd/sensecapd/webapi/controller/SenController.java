@@ -184,7 +184,7 @@ public class SenController {
         for (int i = 0; i < sensors.size(); ++i) {
             JSONObject sensor = sensors.getJSONObject(i);
             String senEui = sensor.getString("sensor_eui");
-            JSONArray measures = sensor.getJSONArray("sensor_measures");
+            JSONArray measures = sensor.getJSONArray("sensor_measure");
             //int channel = sensor.getIntValue("sensor_channel");
             int channel = -1; //Temporarily unread
             NodeSensor nodeSensor = new NodeSensor();
