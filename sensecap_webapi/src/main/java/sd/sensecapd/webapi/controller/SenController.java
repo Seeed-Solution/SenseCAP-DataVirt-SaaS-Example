@@ -192,7 +192,11 @@ public class SenController {
             nodeSensor.setDev_eui(devEui);
             nodeSensor.setSensor_channel(channel);
             nd1.addSensor(nodeSensor);
-
+            
+            if(CollectionUtils.isEmpty(measures)){
+                continue;
+            }
+            
             //Ergodic read the measurement of the sensor
             for (int j = 0; j < measures.size(); ++j) {
                 JSONObject measure = measures.getJSONObject(j);
