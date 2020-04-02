@@ -1,4 +1,12 @@
-let apiHost = 'http://127.0.0.1:9001'
+//let apiHost = 'http://127.0.0.1:9001'
+let baseUrl = window.location.host
+let protocol = window.location.protocol
+let wioUrl=baseUrl
+baseUrl = baseUrl.replace("6060", "9001");
+console.log(baseUrl);
+let url = protocol + "//" + baseUrl
+
+
 let apiUrl = {
   control_api: {
     url: apiHost + '/dev/list', // 获取控制器状态
