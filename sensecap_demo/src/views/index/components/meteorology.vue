@@ -57,7 +57,7 @@ export default {
     },
     // 开启定时器 每1分钟切换一个测量类型
     timerStart() {
-      if (this.timer) {
+      if (this.timer != null) {
         clearInterval(this.timer);
         this.timer = null;
       }
@@ -115,6 +115,12 @@ export default {
       if (val.length > 0) {
         this.getChart(this.selIndex);
       }
+    }
+  },
+  beforeDestroy() {
+    if (this.timer != null) {
+      clearInterval(this.timer);
+      this.timer = null;
     }
   }
 }

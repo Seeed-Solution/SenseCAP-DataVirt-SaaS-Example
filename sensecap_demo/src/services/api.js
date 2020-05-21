@@ -44,6 +44,10 @@ let apiUrl = {
 
 window.apiUrl = apiUrl
 
+let cancelTokens = []
+window.cancelTokens = cancelTokens
+
 export {
-  apiUrl
+  apiUrl,
+  cancelTokens
 }

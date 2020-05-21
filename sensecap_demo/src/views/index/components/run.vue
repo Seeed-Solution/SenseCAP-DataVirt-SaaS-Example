@@ -22,7 +22,6 @@ import {
   ajax
 } from "Services/ajax"
 import config from "../../../config"
-import utils from "../../../assets/js/utils"
 export default {
   name: "run",
   props: {
@@ -32,7 +31,8 @@ export default {
     }
   },
   data: () => ({
-    list: []
+    list: [],
+    timer: null
   }),
   methods: {
     tipsfn(type, text) {
@@ -63,9 +63,15 @@ export default {
   },
   created() {
     this.getList()
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.getList();
     }, config.timeInterval)
+  },
+  beforeDestroy() {
+    if (this.timer != null) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
   }
 }
 </script>

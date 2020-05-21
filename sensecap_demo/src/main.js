@@ -1,10 +1,19 @@
+import 'babel-polyfill'
+import Es6Promise from 'es6-promise'
+require('es6-promise').polyfill()
+require('es6-promise/auto')
+Es6Promise.polyfill()
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
+import Axios from 'axios'
 import App from './App'
 import store from './vuex/index'
+
 // 多语言
-import ElementUI from 'element-ui'
+const ElementUI = () =>
+  import('element-ui')
 import VueI18n from 'vue-i18n'
 import locale from 'element-ui/lib/locale'
 import enLocale from 'element-ui/lib/locale/lang/en'
@@ -13,32 +22,26 @@ import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 import {
   routes
 } from './router/routerConfig'
-
 import {
   msWebApiRoot
 } from './services/api'
-
-import 'babel-polyfill'
-import Es6Promise from 'es6-promise'
+import {
+  ajax
+} from "Services/ajax"
+import utils from 'Assets/js/utils'
 
 // 引入echarts
 import echarts from 'echarts'
-
-import utils from './assets/js/utils'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
 Vue.prototype.$echarts = echarts
 Vue.config.debug = true // 开启错误提示
 
-require('./assets/fonts/font-style')
-require('./assets/scss/common') // 加载全局公共样式
+require('Assets/fonts/font-style')
+require('Assets/scss/common') // 加载全局公共样式
+require('Assets/js/rem.js')
 
-require('es6-promise').polyfill()
-require('es6-promise/auto')
-require('./assets/js/rem.js')
-
-Es6Promise.polyfill()
 Vue.use(VueRouter) // 加载路由
 Vue.use(Vuex) // 加载全局状态管理
 
@@ -72,7 +75,54 @@ const router = new VueRouter({
   scrollBehavior: scrollBehavior
 })
 
+
+// 响应超时配置
+Axios.defaults.retry = 2
+Axios.defaults.retryDelay = 3000
+Axios.defaults.crossDomain = true
+Axios.interceptors.request.use(function(config) {
+  // 用于路由切换前 中断上一个路由的ajax请求
+  config.cancelToken = new Axios.CancelToken(cancel => {
+    window.cancelTokens.push({
+      cancel
+    })
+  })
+  return config
+}, function(error) {
+  // 请求失败的处理
+  return Promise.reject(error)
+})
+
+// ajax响应超时设置
+Axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
+  var config = err.config
+  if (!config || !config.retry) return Promise.reject(err)
+  config.__retryCount = config.__retryCount || 0
+  if (config.__retryCount >= config.retry) {
+    return Promise.reject(err)
+  }
+  config.__retryCount += 1
+  var backoff = new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve()
+    }, config.retryDelay || 1)
+  })
+  return backoff.then(function() {
+    return Axios(config)
+  })
+})
+
+
 router.beforeEach((to, from, next) => {
+  // 路由跳转前 关闭上一页所有ajax请求
+  if (window.cancelTokens && window.cancelTokens.length > 0) {
+    for (var i = 0; i < window.cancelTokens.length; i++) {
+      if (window.cancelTokens[i].cancel()) {
+        window.cancelTokens[i].cancel()
+        delete window.cancelTokens[i]
+      }
+    }
+  }
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
     document.title = to.meta.title
@@ -83,8 +133,8 @@ router.beforeEach((to, from, next) => {
 const i18n = new VueI18n({
   locale: utils.getLanguage() && (utils.getLanguage() === 'cn' || utils.getLanguage() === 'en') ? utils.getLanguage() : (window.location.host.indexOf('.seeed.cn') !== -1 ? 'cn' : 'en'), // 语言标识,默认英语,先去缓存中查找，如果存在并有效，缓存值即为默认语言类型；否则默认为英语
   messages: {
-    'en': Object.assign(require('static/lang/en'), enLocale),
-    'cn': Object.assign(require('static/lang/cn'), zhLocale)
+    'en': Object.assign(require('Assets/lang/en'), enLocale),
+    'cn': Object.assign(require('Assets/lang/cn'), zhLocale)
   }
 })
 

@@ -62,7 +62,7 @@ import {
   ajax
 } from "Services/ajax"
 import config from "../../config"
-import utils from "../../assets/js/utils"
+import utils from "Assets/js/utils"
 
 // 浏览器全屏
 import screenfull from 'screenfull'
@@ -113,7 +113,9 @@ export default {
       meteorologyData: [],
       isBlue: false,
       isOpen: false,
-      nowDate: new Date().getTime() // 获取当前时间
+      nowDate: new Date().getTime(), // 获取当前时间
+      timer1: null,
+      timer2: null
     }
   },
   methods: {
@@ -194,15 +196,24 @@ export default {
   },
   created() {
     // 每隔1秒获取最新时间
-    setInterval(() => {
+    this.timer1 = setInterval(() => {
       this.nowDate = new Date().getTime()
     }, 1000);
-
     this.getChartList();
     // 定时更新测量最新值
-    setInterval(() => {
+    this.timer2 = setInterval(() => {
       this.getChartList();
     }, config.timeInterval)
+  },
+  beforeDestroy() {
+    if (this.timer1 != null) {
+      clearInterval(this.timer1);
+      this.timer1 = null;
+    }
+    if (this.timer2 != null) {
+      clearInterval(this.timer2);
+      this.timer2 = null;
+    }
   }
 }
 </script>

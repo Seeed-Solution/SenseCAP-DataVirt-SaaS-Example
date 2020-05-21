@@ -41,7 +41,8 @@ export default {
     return {
       allData: [],
       isScroll: false,
-      timer: null
+      timer: null,
+      timer1: null
     }
   },
   methods: {
@@ -56,10 +57,12 @@ export default {
     },
     changeData() {
       this.isScroll = true;
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         this.allData.push(this.allData[0]);
         this.allData.shift();
         this.isScroll = false;
+        clearTimeout(timer);
+        timer = null;
       }, 2000)
     },
     getHistoryData() {
@@ -81,8 +84,9 @@ export default {
           };
           this.allData = [];
           this.allData = res.data && res.data.length > 0 ? res.data : [];
-          if (this.timer) {
+          if (this.timer != null) {
             clearInterval(this.timer)
+            this.timer = null
           };
           if (this.allData.length > 4) {
             this.timer = setInterval(this.changeData, 10000);
@@ -98,9 +102,19 @@ export default {
   created() {
     this.getHistoryData();
     // 定时更新历史数据 默认1小时更新
-    setInterval(() => {
+    this.timer1 = setInterval(() => {
       this.getHistoryData();
     }, config.historyInterval)
+  },
+  beforeDestroy() {
+    if (this.timer != null) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+    if (this.timer1 != null) {
+      clearInterval(this.timer1);
+      this.timer1 = null;
+    }
   }
 }
 </script>

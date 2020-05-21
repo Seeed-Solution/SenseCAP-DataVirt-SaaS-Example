@@ -10,8 +10,8 @@
 </template>
 
 <script>
-require('static/js/flowplayer-3.2.13.min.js')
-import swfStr from 'static/swf/flowplayer-3.2.18.swf'
+require('Assets/js/flowplayer-3.2.13.min.js')
+import swfStr from 'Assets/swf/flowplayer-3.2.18.swf'
 export default {
   name: 'video-live',
   data() {
@@ -27,12 +27,12 @@ export default {
         },
         plugins: {
           rtmp: {
-            url: "static/swf/flowplayer.rtmp-3.2.13.swf",
+            url: require("Assets/swf/flowplayer.rtmp-3.2.13.swf"),
             netConnectionUrl: 'rtmp://rtmp01open.ys7.com/openlive/2f0eb60f32de4711899cfd127ba76e4b.hd'
             // rtmp://rtmp01open.ys7.com/openlive/2f0eb60f32de4711899cfd127ba76e4b.hd
           },
           controls: {
-            url: 'static/swf/flowplayer.controls-3.2.16.swf',
+            url: require("Assets/swf/flowplayer.controls-3.2.16.swf"),
             play: true, //开始按钮
             volume: true, //音量按钮
             mute: true, //静音按钮
@@ -56,8 +56,10 @@ export default {
     var oplayerDiv1 = document.getElementById('playerDiv1');
     oplayerDiv1.setAttribute("data-rtmp", this.video_uri);
     oplayerDiv1.setAttribute("href", this.video_uri);
-    setTimeout(() => {
+    let timer = setTimeout(() => {
       flowplayer('playerDiv1', swfStr, this.options);
+      clearTimeout(timer);
+      timer = null;
     }, 6000)
   }
 }

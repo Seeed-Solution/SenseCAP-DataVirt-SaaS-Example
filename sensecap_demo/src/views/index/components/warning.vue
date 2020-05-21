@@ -29,7 +29,7 @@ import {
   ajax
 } from "Services/ajax"
 import config from "../../../config"
-import utils from "../../../assets/js/utils"
+import utils from "Assets/js/utils"
 export default {
   name: "warning",
   props: {
@@ -42,7 +42,8 @@ export default {
     return {
       allData: [],
       isScroll: false,
-      timer: null
+      timer: null,
+      timer1: null
     }
   },
   methods: {
@@ -57,10 +58,12 @@ export default {
     },
     changeData() {
       this.isScroll = true;
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         this.allData.push(this.allData[0]);
         this.allData.shift();
         this.isScroll = false;
+        clearTimeout(timer);
+        timer = null;
       }, 2000)
     },
     getWarnData() {
@@ -83,8 +86,9 @@ export default {
           this.allData = [];
           // 去重
           this.allData = res.data && res.data.length > 0 ? res.data : [];
-          if (this.timer) {
+          if (this.timer != null) {
             clearInterval(this.timer)
+            this.timer = null
           };
           if (this.allData.length > 3) {
             this.timer = setInterval(this.changeData, 10000);
@@ -100,9 +104,15 @@ export default {
   created() {
     this.getWarnData();
     // 定时更新报警中心数据  默认5分钟更新
-    setInterval(() => {
+    this.timer1 = setInterval(() => {
       this.getWarnData();
     }, config.timeInterval)
+  },
+  beforeDestroy() {
+    if (this.timer1 != null) {
+      clearInterval(this.timer1);
+      this.timer1 = null;
+    }
   }
 }
 </script>

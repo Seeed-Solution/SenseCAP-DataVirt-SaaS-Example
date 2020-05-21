@@ -29,7 +29,7 @@ let _request = (method, url, data, options) => {
     data: data,
     url: url,
     timeout: config.timeout,
-    paramsSerializer: function (params) {
+    paramsSerializer: function(params) {
       return Qs.stringify(params, {
         arrayFormat: 'brackets'
       })
@@ -44,10 +44,6 @@ let _request = (method, url, data, options) => {
     }
   }
 
-  // 响应超时配置
-  Axios.defaults.retry = 4
-  Axios.defaults.retryDelay = 1000
-  Axios.defaults.crossDomain = true
   reqestOptions.params = Object.assign({}, reqestOptions.params, addQueryString(options.token, options.params))
   return new Promise((resolve, reject) => {
     Axios.request(reqestOptions)
@@ -57,24 +53,6 @@ let _request = (method, url, data, options) => {
       .catch(err => {
         reject(err)
       })
-    // ajax响应超时设置
-    Axios.interceptors.response.use(undefined, function axiosRetryInterceptor (err) {
-      var configStr = err.configStr
-      if (!configStr || !configStr.retry) return Promise.reject(err)
-      configStr.__retryCount = configStr.__retryCount || 0
-      if (configStr.__retryCount >= configStr.retry) {
-        return Promise.reject(err)
-      }
-      configStr.__retryCount += 1
-      var backoff = new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve()
-        }, configStr.retryDelay || 1)
-      })
-      return backoff.then(function () {
-        return Axios(configStr)
-      })
-    })
   })
 }
 
@@ -86,19 +64,19 @@ let _request = (method, url, data, options) => {
  */
 
 const ajax = {
-  getData (url, options) {
+  getData(url, options) {
     return _request('get', url, null, _options(options))
   },
-  postData (url, data, options) {
+  postData(url, data, options) {
     return _request('post', url, data, _options(options))
   },
-  patchData (url, data, options) {
+  patchData(url, data, options) {
     return _request('PATCH', url, data, _options(options))
   },
-  putData (url, data, options) {
+  putData(url, data, options) {
     return _request('put', url, data, _options(options))
   },
-  deleteData (url, data, options) {
+  deleteData(url, data, options) {
     return _request('delete', url, data, _options(options))
   }
 }

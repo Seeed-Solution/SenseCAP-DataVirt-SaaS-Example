@@ -6,26 +6,24 @@ const index = resolve => {
 }
 
 export const routes = [{
-  path: '/',
-  redirect: '/index'
-},
-{
-  path: '/index',
-  component: index,
-  name: 'index',
-  meta: {
-    title: 'Smart Agriculture Monitoring Data Platform (智慧农业监控数据平台)',
-    path: 'index',
-    auth: true,
-    keepAlive: false
+    path: '/',
+    redirect: '/index'
+  },
+  {
+    path: '/index',
+    component: index,
+    name: 'index',
+    meta: {
+      title: 'Smart Agriculture Monitoring Data Platform (智慧农业监控数据平台)',
+      path: 'index',
+      auth: true,
+      keepAlive: false
+    }
+  },
+  {
+    path: '*',
+    redirect: '/index'
   }
-},
-{
-  path: '*',
-  redirect: '/index'
-}
 ]
 
-module.exports = {
-  routes
-}
+export default routes
