@@ -13,7 +13,7 @@
           <div class="per" v-for="(item, index) in allData" :key="index + item.measure_id + item.time + item.dev_eui + 'warn'">
             <div class="per-top">{{$t('localization').dev_name + ': ' + item.dev_name}}</div>
             <div class="per-bot">
-              <span class="name" :class="{'red': item.status == 2, 'yellow': item.status == 0}">{{item.status == 0 ? $t('localization').value_lit : $t('localization').value_big}} <span style="font-size: 0.1rem; color: #fff; line-height: 0.08rem;">({{$t('localization.measurements' + item.measure_id)}})</span></span>
+              <span class="name" :class="{'red': item.status == 2, 'yellow': item.status == 0}">{{item.status == 0 ? $t('localization').value_lit : $t('localization').value_big}} <span style="font-size: 0.1rem; color: #fff; line-height: 0.08rem;">({{$t('localization')['measurements' + item.measure_id]}})</span></span>
               <span class="value">{{item.value}}{{item.unit}}</span>
               <span class="time">{{timefn(item.time)}}</span>
             </div>

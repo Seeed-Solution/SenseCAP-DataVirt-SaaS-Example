@@ -138,7 +138,7 @@ export default {
             } else {
               let data = params[0];
               let dateN = new Date(data.value[0].replace(new RegExp(/-/gm) ,"/"));
-              str = str + (dateN.getFullYear() + ((dateN.getMonth() + 1 < 10 ? '0' + (dateN.getMonth() + 1) : dateN.getMonth() + 1) + '-') + (dateN.getDate() > 9 ? dateN.getDate() + ' ' : '0' + dateN.getDate() + ' ') + (dateN.getHours() > 9 ? dateN.getHours() + ':' : '0' + dateN.getHours() + ':') + (dateN.getMinutes() > 9 ? dateN.getMinutes() + ':' : '0' + dateN.getMinutes() + ':') + (dateN.getSeconds() > 9 ? dateN.getSeconds() : '0' + dateN.getSeconds())) + ': ' + data.value[1]
+              str = str + (dateN.getFullYear() + '-' + ((dateN.getMonth() + 1 < 10 ? '0' + (dateN.getMonth() + 1) : dateN.getMonth() + 1) + '-') + (dateN.getDate() > 9 ? dateN.getDate() + ' ' : '0' + dateN.getDate() + ' ') + (dateN.getHours() > 9 ? dateN.getHours() + ':' : '0' + dateN.getHours() + ':') + (dateN.getMinutes() > 9 ? dateN.getMinutes() + ':' : '0' + dateN.getMinutes() + ':') + (dateN.getSeconds() > 9 ? dateN.getSeconds() : '0' + dateN.getSeconds())) + ': ' + data.value[1]
             }
             return str
           },

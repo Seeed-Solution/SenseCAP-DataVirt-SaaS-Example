@@ -13,7 +13,7 @@
         <div class="per-all" :class="{'top-transition': isScroll}">
           <div class="per" v-for="(item, index) in allData" :key="index + item.time + item.measure_id + item.dev_eui + 'history'">
             <span class="time">{{item.time ? timefn(item.time) : ''}}</span>
-            <span class="name">{{$t('localization.measurements' + item.measure_id)}}</span>
+            <span class="name">{{$t('localization')['measurements' + item.measure_id]}}</span>
             <span class="value lit">{{item.value}}{{item.unit}}</span>
             <span class="value" :class="{'red': item.status == 2, 'yellow': item.status == 0, 'blue': item.status == 1}">{{item.status == 0 ? $t('localization').value_lit : (item.status == 1 ? $t('localization').normal : $t('localization').value_big)}}<label style="color: #fff"> ({{item.dev_name}})</label></span>
           </div>

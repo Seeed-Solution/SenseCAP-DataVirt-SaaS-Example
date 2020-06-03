@@ -9,13 +9,13 @@
             <div class="text bold">{{item.value}} {{item.unit}}</div>
           </div>
         </div>
-        <p>{{$t('localization.measurements' + item.measure_id)}}</p>
+        <p>{{$t('localization')['measurements' + item.measure_id]}}</p>
       </div>
     </div>
   </div>
   <div class="chart">
     <div class="content">
-      <my-line :langVal="langVal" :idStr="'linechart' + meaNewData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + meaNewData[selIndex].measure_id) + '(' + meaNewData[selIndex].unit + ') ' + '(' + meaNewData[selIndex].dev_name + ')'" :opinion="[meaNewData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meaNewData[selIndex] && meaNewData[selIndex].measure_id"></my-line>
+      <my-line :langVal="langVal" :idStr="'linechart' + meaNewData[selIndex].measure_id + selIndex" :titleText="$t('localization')['measurements' + meaNewData[selIndex].measure_id] + '(' + meaNewData[selIndex].unit + ') ' + '(' + meaNewData[selIndex].dev_name + ')'" :opinion="[meaNewData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meaNewData[selIndex] && meaNewData[selIndex].measure_id"></my-line>
     </div>
   </div>
 </div>

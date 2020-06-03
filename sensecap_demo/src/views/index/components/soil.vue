@@ -5,16 +5,16 @@
     <div class="tabs">
       <span @click.stop="getIndex(inde)" v-for="(elem, inde) in soilData" :key="inde + 'soil'" v-if="inde < 4 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
-        <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
+        <p>{{$t('localization')['measurements' + elem.measure_id]}}</p>
       </span>
     </div>
     <div class="tabs" v-if="soilData.length > 4">
       <span @click.stop="getIndex(inde)" v-for="(elem, inde) in soilData" :key="'soil1' + inde" v-if="inde > 3 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
-        <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
+        <p>{{$t('localization')['measurements' + elem.measure_id]}}</p>
       </span>
     </div>
-    <my-line :langVal="langVal" fontSize="10" :height="soilData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'soilline' + soilData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + soilData[selIndex].measure_id) + '(' + soilData[selIndex].unit + ') ' + '(' + soilData[selIndex].dev_eui + ')'" :opinion="[soilData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && soilData[selIndex] && soilData[selIndex].measure_id"></my-line>
+    <my-line :langVal="langVal" fontSize="10" :height="soilData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'soilline' + soilData[selIndex].measure_id + selIndex" :titleText="$t('localization')['measurements' + soilData[selIndex].measure_id] + '(' + soilData[selIndex].unit + ') ' + '(' + soilData[selIndex].dev_eui + ')'" :opinion="[soilData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && soilData[selIndex] && soilData[selIndex].measure_id"></my-line>
   </div>
 </div>
 </template>

@@ -6,7 +6,7 @@
       <span class="img">
         <img :src="require('../../../assets/images/physical_white/' + elem.measure_id + '.png')" alt="">
       </span>
-      <p>{{$t('localization.measurements' + elem.measure_id)}}({{elem.unit}})</p>
+      <p>{{$t('localization')['measurements' + elem.measure_id]}}({{elem.unit}})</p>
       <p>{{elem.minval}}~{{elem.maxval}}</p>
     </div>
   </div>

@@ -5,16 +5,16 @@
     <div class="tabs">
       <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="'mea' + inde" v-if="inde < 4 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
-        <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
+        <p>{{$t('localization')['measurements' + elem.measure_id]}}</p>
       </span>
     </div>
     <div class="tabs" v-if="meteorologyData.length > 4">
       <span @click.stop="getIndex(inde)" v-for="(elem, inde) in meteorologyData" :key="inde + 'meteorology1'" v-if="inde > 3 && elem" :class="{'active': selIndex == inde}">
         <p>{{elem.value + elem.unit}}</p>
-        <p>{{$t('localization.measurements' + elem.measure_id)}}</p>
+        <p>{{$t('localization')['measurements' + elem.measure_id]}}</p>
       </span>
     </div>
-    <my-line :langVal="langVal" fontSize="10" :height="meteorologyData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'meteorology' + meteorologyData[selIndex].measure_id + selIndex" :titleText="$t('localization.measurements' + meteorologyData[selIndex].measure_id) + '(' + meteorologyData[selIndex].unit + ') ' + '(' + meteorologyData[selIndex].dev_eui + ')'" :opinion="[meteorologyData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meteorologyData[selIndex] && meteorologyData[selIndex].measure_id"></my-line>
+    <my-line :langVal="langVal" fontSize="10" :height="meteorologyData.length <= 4 ? '2rem' : '1.5rem'" :idStr="'meteorology' + meteorologyData[selIndex].measure_id + selIndex" :titleText="$t('localization')['measurements' + meteorologyData[selIndex].measure_id] + '(' + meteorologyData[selIndex].unit + ') ' + '(' + meteorologyData[selIndex].dev_eui + ')'" :opinion="[meteorologyData[selIndex].measure_id]" :opinionData="opinionData" class="charts-all" v-if="selIndex != null && meteorologyData[selIndex] && meteorologyData[selIndex].measure_id"></my-line>
   </div>
 </div>
 </template>
