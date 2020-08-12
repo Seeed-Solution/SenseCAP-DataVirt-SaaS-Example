@@ -7,14 +7,14 @@ import sd.sensecapd.webapi.model.Sensor.ReturnValues.*;
 import java.util.List;
 
 /*
-* Data Access Object for Sensor
-* */
+ * Data Access Object for Sensor
+ * */
 @Mapper
 public interface SensorDao {
 
     /*
-    * query values of one sensors from db
-    * */
+     * query values of one sensors from db
+     * */
     @Select("SELECT * FROM tb_node_measure_values WHERE dev_eui=#{dev_eui} and measure_id=#{measure_id} and time>=#{start} and time<=#{end} order by id")
     List<MeasureNote> queryValues(@Param("dev_eui") String dev_eui, @Param("measure_id") int measure_id, @Param("start") long start, @Param("end") long end);
 
@@ -117,7 +117,7 @@ public interface SensorDao {
     /*
      * update meta info of measure
      * */
-    @Update("select count(measure_id) c from tb_measure where measure_id=#{measure_id}")
+    @Select("select count(measure_id) c from tb_measure where measure_id=#{measure_id}")
     int getMeasureCountById(@Param("measure_id") int measure_id);
 
     /*

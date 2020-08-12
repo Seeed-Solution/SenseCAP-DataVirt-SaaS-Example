@@ -6,13 +6,11 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import sd.sensecapd.webapi.model.CommTool;
@@ -24,7 +22,6 @@ import sd.sensecapd.webapi.service.SensorService;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /*
  * Web API controller for sensors
@@ -35,12 +32,7 @@ import java.util.stream.Collectors;
 public class SenController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Value("${spring.sensor.OrganizationId}")
-    private String organizationId;
-    @Value("${spring.sensor.APIID}")
-    private String APIID;
-    @Value("${spring.sensor.APIKey}")
-    private String APIKey;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -54,18 +46,17 @@ public class SenController {
     public HttpResponseMessage refresh() {
         List<String> nodes = getNodeList();
 
-        if (!CollectionUtils.isEmpty(nodes)) {
-            for (int i = 0; i < nodes.size(); ++i) {
-                DevNode nodeDetails = getNodeDetails(nodes.get(i));
-                nodeService.saveDevNode(nodeDetails);
-            }
+        for (int i = 0; i < nodes.size(); ++i) {
+            DevNode nodeDetails = getNodeDetails(nodes.get(i));
+            nodeService.saveDevNode(nodeDetails);
         }
+
         List<MeasureCate> measurecates = getMeasureCates();
-        if (!CollectionUtils.isEmpty(measurecates)) {
-            for (int i = 0; i < measurecates.size(); ++i) {
-                nodeService.saveMeasureCate(measurecates.get(i));
-            }
+
+        for (int i = 0; i < measurecates.size(); ++i) {
+            nodeService.saveMeasureCate(measurecates.get(i));
         }
+
         logger.info("Refresh sensor data completed!");
         return HttpResponseMessage.SUCCESS;
     }
@@ -111,7 +102,6 @@ public class SenController {
      * */
     @RequestMapping(value = "/recentvalues", method = RequestMethod.GET)
     public HttpResponseMessage queryValuesLastMonth(int count) throws ParseException {
-        logger.warn("count:{}", count);
         List<SensorMeasureRecord> values = nodeService.queryRecentRecords(count);
         return new HttpResponseMessage(values);
     }
@@ -144,10 +134,6 @@ public class SenController {
         url += "/lists/devices/eui";
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         JSONObject body = responseEntity.getBody();
-        String code = body.getString("code");
-        if (Integer.parseInt(code) > 0) {
-            return Collections.EMPTY_LIST;
-        }
         JSONObject data = body.getJSONObject("data");
         JSONArray nodes = data.getJSONArray("node");
         List<String> lstNodeName = new ArrayList<String>();
@@ -166,7 +152,7 @@ public class SenController {
         Map<String, Object> requestMap = new HashMap<>();
         String url = CommTool.readProperty("spring.sensor.url") + "/node/" + nodeId;
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
-        logger.warn("url:{},response:{}",responseEntity.toString());
+        logger.info(responseEntity.toString());
         JSONObject body = responseEntity.getBody();
         JSONObject data = body.getJSONObject("data");
         int online_status = data.getIntValue("online_status");
@@ -185,32 +171,27 @@ public class SenController {
             JSONObject sensor = sensors.getJSONObject(i);
             String senEui = sensor.getString("sensor_eui");
             JSONArray measures = sensor.getJSONArray("sensor_measure");
-<<<<<<< HEAD
-=======
-            //System.out.println(sensor.toJSONString());
->>>>>>> 修改获取measure为null情况
-            //int channel = sensor.getIntValue("sensor_channel");
-            int channel = -1; //Temporarily unread
+            int channel = sensor.getIntValue("sensor_channel");
+            //int channel = -1; //Temporarily unread
             NodeSensor nodeSensor = new NodeSensor();
             nodeSensor.setSensor_eui(senEui);
             nodeSensor.setDev_eui(devEui);
             nodeSensor.setSensor_channel(channel);
             nd1.addSensor(nodeSensor);
-            
-            if(measures==null){
-                continue;
-            }
-            
+
             //Ergodic read the measurement of the sensor
-            for (int j = 0; j < measures.size(); ++j) {
-                JSONObject measure = measures.getJSONObject(j);
-                int measureId = measure.getIntValue("id");
-                NodeSensorMeasure sensorMeasure = new NodeSensorMeasure();
-                sensorMeasure.setDev_eui(devEui);
-                sensorMeasure.setSensor_eui(senEui);
-                sensorMeasure.setMeasure_id(measureId);
-                nodeSensor.addSensorMeasure(sensorMeasure);
+            if (measures != null) {
+                for (int j = 0; j < measures.size(); ++j) {
+                    JSONObject measure = measures.getJSONObject(j);
+                    int measureId = measure.getIntValue("id");
+                    NodeSensorMeasure sensorMeasure = new NodeSensorMeasure();
+                    sensorMeasure.setDev_eui(devEui);
+                    sensorMeasure.setSensor_eui(senEui);
+                    sensorMeasure.setMeasure_id(measureId);
+                    nodeSensor.addSensorMeasure(sensorMeasure);
+                }
             }
+
         }
 
         return nd1;
@@ -226,9 +207,6 @@ public class SenController {
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         logger.info(responseEntity.toString());
         JSONObject body = responseEntity.getBody();
-        if(Integer.parseInt(body.get("code").toString())>0){
-            return Collections.EMPTY_LIST;
-        }
         JSONArray data = body.getJSONArray("data");
         List<MeasureCate> result = new ArrayList<MeasureCate>();
         //Ergodic read out the measure's category
@@ -261,18 +239,15 @@ public class SenController {
 
     private HttpEntity getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        String header = getHeader();
-        headers.set("Authorization", header);
-        logger.warn("Authorization:[{}]",header);
+        headers.set("Authorization", getHeader());
         headers.set("Content-Type", "application/json");
         return new HttpEntity(headers);
     }
 
     private String getHeader() {
-        String appkey = APIID;//CommTool.readProperty("spring.sensor.APIID");
-        String seckey = APIKey;//CommTool.readProperty("spring.sensor.APIKey");
+        String appkey = CommTool.readProperty("spring.sensor.APIID");
+        String seckey = CommTool.readProperty("spring.sensor.APIKey");
         String auth = appkey + ":" + seckey;
-        logger.warn("getHeader auth:[{}]",auth);
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
         return "Basic " + new String(encodedAuth);
     }
