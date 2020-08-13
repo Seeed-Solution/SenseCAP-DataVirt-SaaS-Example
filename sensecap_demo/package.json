@@ -12,6 +12,7 @@
     "analyz": "cross-env NODE_ENV=production npm_config_report=true npm run build",
     "devops": "cross-env NODE_ENV=production webpack --mode production --progress --hide-modules"
   },
+  
   "dependencies": {
     "axios": "^0.19.2",
     "babel": "^6.3.13",

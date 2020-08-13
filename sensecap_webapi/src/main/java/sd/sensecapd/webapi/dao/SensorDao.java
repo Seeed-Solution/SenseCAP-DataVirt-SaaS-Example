@@ -11,7 +11,6 @@ import java.util.List;
  * */
 @Mapper
 public interface SensorDao {
-
     /*
      * query values of one sensors from db
      * */
@@ -53,10 +52,11 @@ public interface SensorDao {
      * */
     @Update("update tb_measure set minval=#{min},maxval=#{max} where measure_id=#{measure_id}")
     void updateMeasureRange(@Param("measure_id") int measure_id, @Param("min") double min, @Param("max") double max);
+
     /*
      * update value of the sensor in db
      * */
-    @Insert("update tb_node_measure_values set value=#{value} where dev_eui=#{dev_eui} and measure_id=#{measure_id} and channel=#{channel} and time=#{time}")
+    @Update("update tb_node_measure_values set value=#{value} where dev_eui=#{dev_eui} and measure_id=#{measure_id} and channel=#{channel} and time=#{time}")
     int updateMeasureNote(@Param("dev_eui") String dev_eui, @Param("measure_id") Integer measure_id, @Param("channel") Integer channel, @Param("value") double value, @Param("time") long time);
 
     /*
