@@ -131,7 +131,8 @@ public class SenController {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();
         String url = CommTool.readProperty("spring.sensor.url");
-        url += "/lists/devices/eui";
+        //url += "/lists/devices/eui";
+        url+="/device/list_euis";
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         JSONObject body = responseEntity.getBody();
         JSONObject data = body.getJSONObject("data");
@@ -150,7 +151,7 @@ public class SenController {
     private DevNode getNodeDetails(String nodeId) {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();
-        String url = CommTool.readProperty("spring.sensor.url") + "/node/" + nodeId;
+        String url = CommTool.readProperty("spring.sensor.url") + "/device/node/" + nodeId;
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         logger.info(responseEntity.toString());
         JSONObject body = responseEntity.getBody();
@@ -203,7 +204,7 @@ public class SenController {
     private List<MeasureCate> getMeasureCates() {
         HttpEntity entity = getHttpEntity();
         Map<String, Object> requestMap = new HashMap<>();
-        String url = CommTool.readProperty("spring.sensor.url") + "/lists/sensor/measure";
+        String url = CommTool.readProperty("spring.sensor.url") + "/sensor/measurements";
         ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, JSONObject.class, requestMap);
         logger.info(responseEntity.toString());
         JSONObject body = responseEntity.getBody();

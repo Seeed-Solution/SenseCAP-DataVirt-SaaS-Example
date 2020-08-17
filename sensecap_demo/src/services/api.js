@@ -1,4 +1,4 @@
-//let apiHost = 'http://127.0.0.1:9001'
+let apiHost = 'http://127.0.0.1:9001'
 let baseUrl = window.location.host
 let protocol = window.location.protocol
 let wioUrl=baseUrl
